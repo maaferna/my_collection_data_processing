@@ -24,12 +24,10 @@ Go to directory.
 <br>
 -In the settings file change the SECRET_KEY locations, to store the key in the .env file. Include next code
 
-<div styles="bacground_color: blue"><p>python-dotenv</p></div>
-<code>
-from dotenv import load_dotenv, find_dotenv
+<div style="background-color: blue"><p>python-dotenv</p></div>
+<code>from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
-SECRET_KEY = os.environ['SECRET_KEY']
-</code>
+SECRET_KEY = os.environ['SECRET_KEY']</code>
 
 <br>
 <img height="50px" src="https://portfolio-mparraf.herokuapp.com/static/img/django.png" />
