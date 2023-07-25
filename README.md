@@ -6,29 +6,25 @@ This project is used as a how base (template) to create new projects, considers 
 <h6>Step by Step</h6>
 Go to directory.
 -Create virtual enviroment with Pipenv
-<code>
-    pipenv shell<
-</code>
+<code>pipenv shell</code>
+<br>
 -Install libraries Django / django-dotenv
-<code>
-    pipenv install django django-dotenv
-</code>
+<code>pipenv install django django-dotenv</code>
+<br>
 -Create project
-<code>
-    django-admin startproject project_name
-</code>
+<code>django-admin startproject project_name</code>
+<br>
+
 -Apply first migrations:admin, auth, contenttypes, sessions
-<code>
-    python manage.py migrate
-</code>
-
+<code>python manage.py migrate</code>
+<br>
 -In root directory project create files .env and gitignore
-<code>
- touch .env .gitignore
-</code>
+<code>touch .env .gitignore</code>
 
+<br>
 -In the settings file change the SECRET_KEY locations, to store the key in the .env file. Include next code
 
+<div styles="bacground_color: blue"><p>python-dotenv</p></div>
 <code>
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
@@ -40,7 +36,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 <br>
 
 
-To store environment variables were created .env and .gitignore files, and install the library "python-dotenv" to manage the importation of these.
+- To store environment variables were created .env and .gitignore files, and install the library "python-dotenv" to manage the importation of these.
 
 
 
