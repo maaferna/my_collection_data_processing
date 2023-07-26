@@ -150,3 +150,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Allowed Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Replace 'home' with the URL name of the page you want to redirect to
+LOGOUT_REDIRECT_URL = 'home'  

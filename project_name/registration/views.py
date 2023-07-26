@@ -38,7 +38,7 @@ def view_register(request):
     form = RegistroUsuarioForm(request.POST)
     if form.is_valid():
       user = form.save()
-      user.groups.add(Group.objects.get(name="visualizar_catalogo"))
+      #user.groups.add(Group.objects.get(name="visualizar_catalogo"))
       login(request, user)
       messages.success(request, "Registrado Satisfactoriamente." )
       return HttpResponseRedirect('/')
@@ -46,11 +46,11 @@ def view_register(request):
   form = RegistroUsuarioForm()
   return render (request=request, template_name="registration/registro.html", context={"register_form":form})
 
-
+@login_required
 def view_logout(request):
   logout(request)
   messages.info(request, "Se ha cerrado la sesión satisfactoriamente.")
-  return HttpResponseRedirect('') 
+  return redirect('home')
 
 
 def contact_view(request):
