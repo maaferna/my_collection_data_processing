@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load fontawesome_5 %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% fontawesome_5_static %}
+        {# Load CSS and JavaScript #}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {# Display django.contrib.messages as Bootstrap alerts #}
+        {% bootstrap_messages %}
+        <title>Proyecto Vehiculos</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"  type="text/css" href="{% static 'css/styles.css' %}" />
+  </head>
+    {% block navbar %}
+        {% include 'partials/_header.html' %}
+    {% endblock %}
+    
+    <body>
+        <main class="mb-5">
+            <br>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <br>
+        {% include 'partials/_footer.html' %}
+        {% block js %}
+        {% endblock %}
+
+        <script src="{% static 'js/scripts.js' %}"></script>
+
+    </body>
+</html>

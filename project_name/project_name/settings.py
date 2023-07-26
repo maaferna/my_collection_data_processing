@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'crispy_forms',
     'rest_framework',
+    'app_name.apps.AppNameConfig', #update this line with real name of apps, see in directory of initial app the apps.py file.
+    'registration.apps.RegistrationConfig',
 ]
 
 MIDDLEWARE = [
