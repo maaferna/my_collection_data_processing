@@ -6,6 +6,7 @@ django-bootstrap-v5==1.0.11
 django-crispy-forms==2.0
 django-fontawesome-5==1.0.18
 djangorestframework==3.14.0
+psycopg2==2.9.5
 python-dotenv==1.0.0
 pytz==2023.3
 soupsieve==2.4.1
