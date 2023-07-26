@@ -47,10 +47,10 @@ def view_register(request):
   return render (request=request, template_name="registration/registro.html", context={"register_form":form})
 
 
-def logout_view(request):
+def view_logout(request):
   logout(request)
   messages.info(request, "Se ha cerrado la sesión satisfactoriamente.")
-  return HttpResponseRedirect('/') 
+  return HttpResponseRedirect('') 
 
 
 def contact_view(request):
