@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 python-dotenv = "*"
+django-countries = "==7.5.1"
 
 [dev-packages]
 

@@ -63,6 +63,32 @@ Pipenv should be installed with Python = "3.11" & Django==4.2.3, but this was us
 <code>pipenv shell</code>
 Next, install the basic package for this project, use next code:
 <code>pip install -r requirements.txt</code>
+-Migrate database and create superuser
+<code>python manage.py migrate
+python manage.py createsuperuser</code>
+-Personalize project and app names respectively. In urls.py file inside of project directory 
+
+<code>urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('app_name')) #updated this name with real app
+]</code>
+
+The settings.py should be:
+
+<code>INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'fontawesome_5',
+    "bootstrap5",
+    'crispy_bootstrap5',
+    'crispy_forms',
+    'rest_framework',
+    'app_name.apps.AppNameConfig', #update this line with real name of apps, see in directory of initial app the apps.py file.
+]</code>
 
 
 
