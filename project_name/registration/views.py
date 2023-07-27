@@ -58,7 +58,7 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, 'success.html')
+            return render(request, 'registration/success.html')
     form = ContactForm
     context = {'form': form}
-    return render(request, 'contact.html', context)
+    return render(request, 'registration/contact.html', context)

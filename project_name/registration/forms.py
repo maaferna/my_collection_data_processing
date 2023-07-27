@@ -11,6 +11,12 @@ class RegistroUsuarioForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Input your username'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput,
+            'password2': forms.PasswordInput,
+        }
 
     def save(self, commit=True):
         user = super(RegistroUsuarioForm, self).save(commit=False)
@@ -31,6 +37,6 @@ class ContactForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'subject': forms.TextInput(attrs={'class': 'form-control'}),
             'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Input your feedback'}),
-            'company': forms.TextInput(attrs={'class': 'form-control col-12 col-sm-6'}),
+            'company': forms.TextInput(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-control'}),
         }
