@@ -1,0 +1,8 @@
+<!-- overtime_app/templates/overtime_app/calculate_overtime.html -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate Overtime Pay</button>
+  </form>
+  
+

@@ -1,0 +1,65 @@
+{
+    "blog": [
+      {
+      "endpoint": "blog/index/",
+      "description": "Render all posts published with information on release date and author, and give a short description of this post.",
+      "href": "https://portfolio-mparraf.herokuapp.com/blog/index/"
+      },
+      {
+      "endpoint": "blog/post/<slug>",
+        "description": "Render more information for a specific Post",
+        "href": "https://portfolio-mparraf.herokuapp.com/blog/post/django-introduction/"
+      }
+    ],
+    "restaurant": [
+      {
+          "endpoint": "blog/index/",
+            "description": "Render all posts published with information on release date and author, and give a short description of this post.",
+            "href": "https://portfolio-mparraf.herokuapp.com/blog/index/"
+          },
+          {
+          "endpoint": "post/<slug>",
+            "description": "Render more information for a specific Post",
+            "href": "https://portfolio-mparraf.herokuapp.com/blog/post/django-introduction/"
+          }
+    ],
+      "movie_api": [
+      {
+          "endpoint": "movies/home/",
+            "description": "This endpoint gives a brief description of the project & supplies a link to the documentation reference of the IMDB page.",
+            "href": "https://portfolio-mparraf.herokuapp.com/movies/home/"
+          },
+          {
+          "endpoint": "movies/favorite-rest/",
+            "description": "Using a serializer process with Rest-Framework display in JSON format he favorite movies. ",
+            "href": "https://portfolio-mparraf.herokuapp.com/movies/favorite-rest/"
+          },
+        {
+          "endpoint": "movies/search-results/",
+            "description": "This endpoint allows you to make a request to IMDB API, through of search term that is included and it will be sent as how parameter in the headers of the request.",
+            "href": "https://portfolio-mparraf.herokuapp.com/movies/search-results/?search_term=the lord of the rings:"
+          },
+        {
+          "endpoint": "movies/favorite/",
+            "description": "",
+            "href": "https://portfolio-mparraf.herokuapp.com/movies/favorite/"
+          }
+    ],
+      "digidesk": [
+      {
+          "endpoint": "digidesk/",
+            "description": "This endpoint makes a request to retrieve data from the Digimons API, using the get method and transform data with json() method and django.core.paginators to retrieve each time 12 Digimons.\n\nAnother section makes a request to the API using the JavaScript fetch() function. \n\nThe third section retrieves  Digimon saved from DataBase using CRM Django through objects.all().",
+            "href": "https://portfolio-mparraf.herokuapp.com/digidesk/"
+          },
+          {
+          "endpoint": "digimons/js/",
+            "description": "Share JavaScript code to retrieve data",
+            "href": "https://portfolio-mparraf.herokuapp.com/digidesk/digimons/js/"
+          },
+        {
+          "endpoint": "digimons/py/",
+            "description": "Share Python code to retrieve from API and save data in the Database, and the template",
+            "href": "https://portfolio-mparraf.herokuapp.com/digidesk/digimons/py/"
+          }
+      ]
+  }

@@ -1,598 +1,397 @@
-.row-header {
-    margin: 0px auto;
-    padding: 0px 0px;
-  }
-  
-  .row-header .h1 {
-    font-size: 300%;
-    text-align: left;
-    font-weight: bold;
-    padding-top: 10%;
-  }
-  
-  .row-content {
-    margin: 0px auto;
-    padding: 50px 0px;
-    border-bottom: 1px ridge;
-    min-height: 400px;
-    text-align: center;
-  }
-  
-  body {
-     font-family: 'Karla', sans-serif;
-     margin:0;
-     padding:50px 0px 0px 0px;
-     z-index: 0;
-  }
-  
-  header{
-      text-align: left;
-      padding: 0;
-      margin: 0;
-  }
-  
-  header img {
-      margin-left: auto;
-      margin-right: auto;
-      width:100%
-  }
-  
-  address {
-    font-size: 80%;
-    margin: 0px;
-    color: rgba(87, 111, 114, 0.8);
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-      font-family: 'Markazi Text', serif;
-      letter-spacing: 2px;;
-  }
-  
-  .h1 {
-      font-size: 4rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0;
-  }
-  
-  .h2 {
-      font-size: 2.5rem;
-      color: white;
-      margin:1rem 0;
-  }
-  
-  .post-blog {
-       justify-content: space-between;
-       color: #403054;
-       padding: 10px;
-       margin: 10px;
-       border-style: outset;
-       border-right-width: 2px;
-       border-bottom-left-radius: 12px;
-       box-shadow: 23px 15px 22px 0px rgba(0,0,0,0.45);
-  -webkit-box-shadow: 23px 15px 22px 0px rgba(0,0,0,0.45);
-  -moz-box-shadow: 23px 15px 22px 0px rgba(0,0,0,0.45);
-  }
-  .post-blog p {
-      margin: 20px 50px 20px 50px;
-  }
-  
-  a {
-      color: #EE9972;
-      text-decoration: none;
-  }
-  
-  a:hover {
-      text-decoration: underline;
-  }
-  
-  
-  section {
-      display: flex;
-      gap: 2rem 1rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      flex-direction: row;
-  }
-  
-  article {
-      flex:1;
-  }
-  
-  article img {
-      max-width: 100%;
-  }
-  
-  .breadcrumb ol {
-      display: flex;
-      flex-wrap: wrap;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      color: #ded5d2;
-  }
-  
-  .breadcrumb ol a {
-      color: #fe825a;
-  }
-  
-  .breadcrumb ol li+li {
-      padding-left: 10px;
-  }
-  
-  .breadcrumb ol li+li::before {
-      display: inline-block;
-      padding-right: 10px;
-      color: #c8bab5;
-      content: "/";
-  }
-  .pdf_display {
-    background-size: cover;
-    box-shadow: 0 0 140px 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    height: 300px;
-    width: 500px;
-  }
-  
-  article ul {
-      list-style: none;
-  }
-  
-  main {
-    margin: 0px;
-  }
-  
-  main article {
-      border: 1px solid #EDEFEE;
-      padding-left: 1rem;
-      padding-right: 1rem;
-  }
-  
-  figure {
-      margin: 0;
-  }
-  
-  label {
-      font-weight: bold;
-      display: block;
-    }
-  
-  input{
-      width: 80%;
-      display: block;
-      padding: .5rem 1rem;
-      line-height: 1.5rem;
-      box-sizing: border-box;
-  }
-  
-  #button {
-      padding: .5rem 1rem;
-      border: 1px solid #495E57;
-      background-color:#495E57;
-      border-radius: 5px;
-      width: 80%;
-      font-size: 1.25rem;
-      display: block;
-      color: #fff;
-      line-height: 25px;
-    }
-  
-  #hero {
-      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url('../img/restaurant_inside.jpg');
-      background-size: cover;
-      background-position: 75%;
-      color: white;
-      min-height: 200px;
-      text-align: center;;
-  }
-  
-  #hero p {
-      font-size: 2rem;
-      margin:0;
-      text-shadow: 2px 2px 4px #333333;
-  }
-  
-  .cta { 
-      display: inline-block; 
-      color: rgba(255, 255, 255, 0.9);
-      width: 200px; 
-      font-weight: bold; 
-      font-size: 1.5rem;
-      padding: 8px; 
-      border: 3px solid #fff; 
-      text-align: center; 
-      outline: none; 
-      text-decoration: none; 
-      margin: 1rem;
-  } 
-  
-  .cta:hover {
-      color:#fff;
-      background:#495E57;
-      border: 3px solid #495E57; 
-    }
-  
-    .heading-shadow {
-      text-shadow: 1px 1px 4px #333333;
-    }
-  
-  .container-fluid {
-      background-color: rgba(125, 157, 156, 0.5);
-  }
-  
-  .footer {
-      background-color: rgba(125, 157, 156, 0.5);
-      clear: both;
-      position: relative;
-      height: 200px;
-      margin-top: -200px;
-      padding: 20px 0px 20px 0px;
-  }
-  
-  .footer img {
-      max-width: 50%;
-  }
-  
-  
-  .footer p {
-      border-top: #333333;
-      border-style: solid;
-      border-width: 0.1rem;
-      border-bottom: none;
-      border-left: none;
-      border-right: none;
-      text-align: right;
-      padding-top: 1rem;;
-  }
-  
-  @media (max-width: 800px) {
-      section {
-          flex-direction: column;   
-      }
-  
-      .row {
-          flex-direction: column;
-          width: 100%;
-        }
-     
-      input{
-          width: 100%;
-      }
-  
-      #button{
-          width: 100%;
-      }
-    }
-  
-   * {box-sizing: border-box;}
-  
-  /* Style the navbar */
-  
-  .navbar-brand {
-    color: #fff !important;
-    text-align: center;
-    padding: 14px 16px;
+{% load static %}
+
+body {
+    font-family: 'Karla', sans-serif;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Markazi Text', serif;
+    letter-spacing: 2px;;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 2.5rem;
+    color: #333333;
+    margin:1rem 0;
+}
+
+p, ul{
+    font-size: 1.25rem;;
+}
+
+a {
+    color: #EE9972;
     text-decoration: none;
-    font-size: 0.8em;
-  }
-  .navbar {
-    background-color: #e9e9e9;
-      padding: 0;
-      margin: 0;
-  }
-  
-  navbar img{
-      width:100%
-  }
-  
-  /* Navbar links */
-  .nav-item a {
-    float: left;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header img {
     display: block;
-    color: #fff !important;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 1.5em;
-    transition: 0.5s background-color;
-  }
-  
-  .navbar-text i {
-    float: left;
-    display: block;
-    color: #fff !important;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 1.5em;
-    transition: 0.5s background-color;
-  }
-  
-  /* Navbar links on mouse-over */
-  .nav-item a:hover, nav-item span {
-    background-color: #74e9e9;
-    color: #444;
-  }
-  
-  
-  /* Active/current link */
-  .nav-item a.active {
-    background-color: #f6e5e5;
-    color: #444;
-    cursor: default;
-  }
-  
-  /* Sub Menus */
-  nav-item li li {
-    font-size: .8em;
-    background-color: #00b7ea;
-  }
-  nav-item > ul > li {
-    text-align: center;
-  }
-  nav-item > ul > li > a {
-    padding-left: 0;
-  }
-  /* Sub Menus */
-  nav-item li ul {
-    position: absolute;
-    display: none;
-    width: inherit;
-  }
-  nav-item li:hover ul {
-    display: block;
-  }
-  nav-item li ul li {
-    display: block;
-  }
-  
-  /* Style the input container */
-  .topnav .login-container {
-    float: right;
-  }
-  
-  /* Style the input field inside the navbar */
-  .topnav input[type=text] {
-    padding: 6px;
-    margin-top: 8px;
-    font-size: 17px;
-    border: none;
-    width: 150px; /* adjust as needed (as long as it doesn't break the topnav) */
-  }
-  
-  /* Style the button inside the input container */
-  .topnav .login-container button {
-    float: right;
-    padding-button: 6px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #ddd;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .topnav .login-container button:hover {
-    background: #ccc;
-  }
-  
-  /* Add responsiveness - On small screens, display the navbar vertically instead of horizontally */
-  @media screen and (max-width: 600px) {
-    .navbar .login-container {
-      float: none;
-    }
-    .navbar a, .navbar input[type=text], .navbar .login-container button {
-      float: none;
-      display: block;
-      text-align: left;
-      width: 100%;
-      margin: 0;
-    }
-    .navbar input[type=text] {
-      border: 1px solid #ccc;
-    }
-  }
-  
-  .li .dropdown-item {
-      color: blue;
-  }
-  
-  .show-read-more .more-text{
-         display: none;
-      }
-  .show-read-more .more-text p{
-      align: justify;
-      }
-  
-  .specialization-detail {
-      border:1px solid #ccc;
-      margin-top: 30px;
-      margin-bottom: 30px;
-  }
-  
-  #mycarousel span {
-    height: 30%;
-    top: 25%;
-    width: 30%;
-    background-color: rgba(240, 240, 242, 0.9);
-  }
-  
-  .carousel-inner {
-      background: rgba(7, 7, 32, 0.5);
-  }
-  .carousel-item {
-      margin-left: 10%;
-  }
-  
-  .carousel-item .object {
-    background-size: cover;
-    box-shadow: 0 0 140px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  
-  #carouselButton {
-    right: 0px;
-    position: absolute;
-    bottom: 0px;
-    z-index: 1;
-  }
-  
-  
-  .carousel-indicators .btn-option {
-      border: 1px solid #495E57;
-      background-color: #ccc;
-      position: relative;
-      float: right;
-      width: 83%;
-      margin-right: 0px;
-      height:5px;
-      overflow:auto;
-      padding-right: 10px;
-  }
-  
-  
-  .embed-responsive-item  {
-      height:500px;
-      width: 500px;
-      object-fit: cover;
-      object-position: 50% 50%;
-  }
-  
-  .mt-0 {
-    margin-top: 0 !important;
-  }
-  
-  .ml-1 {
-    margin-left: ($spacer * .25) !important;
-  }
-  
-  .px-2 {
-    padding-left: ($spacer * .5) !important;
-    padding-right: ($spacer * .5) !important;
-  }
-  
-  .p-3 {
-    padding: $spacer !important;
-  }
-  
-  
-  * {
-    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+}
+
+
+section {
+    display: flex;
+    gap: 2rem 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    flex-direction: row;
+}
+
+article {
+    flex:1;
+}
+
+article img {
+    max-width: 100%;
+}
+
+.carousel-inner {
+    background: rgba(7, 7, 32, 0.5);
+}
+.carousel-item {
+    margin-left: 10%
+}
+
+.carousel-item .object {
+  background-size: cover;
+  box-shadow: 0 0 140px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  height: 500px;
+  width: 500px;
+}
+
+#mycarousel span {
+  height: 30%;
+  top: 25%;
+  width: 30%;
+  background-color: rgba(240, 240, 242, 0.9);
+}
+.embed-responsive-item {
+    height:300px;
+    width: 75%
+}
+#carouselButton {
+  right: 0px;
+  position: absolute;
+  bottom: 0px;
+  z-index: 1;
+}
+.breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
     padding: 0;
+    margin: 0;
+    color: #ded5d2;
+}
+
+.breadcrumb ol a {
+    color: #fe825a;
+}
+
+.breadcrumb ol li+li {
+    padding-left: 10px;
+}
+
+.breadcrumb ol li+li::before {
+    display: inline-block;
+    padding-right: 10px;
+    color: #c8bab5;
+    content: "/";
+}
+.pdf_display {
+  background-size: cover;
+  box-shadow: 0 0 140px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  height: 300px;
+  width: 500px;
+}
+
+article ul {
+    list-style: none;
+}
+
+main article {
+    border: 1px solid #EDEFEE;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+figure {
+    margin: 0;
+}
+
+label {
+    font-weight: bold;
+    display: block;
   }
-  
-  .top-bar {
-    background: #333;
-    color: #fff;
-    padding: 1rem;
-  }
-  
-  
-  .page-info {
-    margin-left: 1rem;
-  }
-  
-  .error {
-    background: orangered;
-    color: #fff;
-    padding: 1rem;
-  }
-  
-  .avatar {
-    height: 3rem;
-    width: 3rem;
-    margin-top: 8px;
-    border-radius: 5.0em;
-    margin-right: 1em;
-    margin-bottom: 8px;
-  }
-  
-  .jumbotron {
-     background-image: url('https://portfolio-mparraf.herokuapp.com/static/img/jumbotron-image.jpg');
-     background-size: cover;
-     color:rgba(241, 238, 238, 0.951) !important;
-     -webkit-background-size: cover;
-     -moz-background-size: cover;
-     -o-background-size: contain;
-     background-color: rgba(0, 0, 0, 0.6);
-  }
-  
-  .jumbotron-movies {
-     background-image: url('/static/img/jumbotron-movies.jpg');
-     background-size: cover;
-     color:rgba(241, 238, 238, 0.951) !important;
-     -webkit-background-size: cover;
-     -moz-background-size: cover;
-     -o-background-size: contain;
-     background-color: rgba(0, 0, 0, 0.6);
-  }
-  
-  
-  .subsection {
-      margin-left: 1em;
-  }
-  
-  .img-container{
-      height:100px;
-      width: 100%;
-      margin:0 auto;
-      color: white !important;
-      background-color: #ccffff;
-      background-repeat: no-repeat;
-      background-position: right top;
-       }
-  
-  @-webkit-keyframes animate-stripes {
-     100% { background-position: -100px 0px; }
-  }
-  
-  @keyframes animate-stripes {
-     100% { background-position: -100px 0px; }
-  }
-  
-  
-  #progressBar {
-    background-color: hsla(0, 0%, 0%, 0.2);
-    border-radius: 2px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
-    -webkit-animation: animate-stripes 5s linear infinite;
-          animation: animate-stripes 5s linear infinite;
-  }
-  
-  @media only screen and (min-width:780px) {
-    h1{
-      width: 50%;
-    }
-  }
-  
-  @media only screen and (min-width:1024px) {
-    h1{
-      width: 75%;
-    }
-  }
-  
-  .loading-spinner{
-    position:relative;
-    display:block;
-  }
-  @keyframes spinner {
-    to {transform: rotate(360deg);}
-  }
-  .spinner {
-      min-height:36px;
-  }
-  .spinner:before {
-    content: '';
+
+input{
+    width: 80%;
+    display: block;
+    padding: .5rem 1rem;
+    line-height: 1.5rem;
     box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    border-top-color: #333;
-    animation: spinner 1s linear infinite;
+}
+
+#button {
+    padding: .5rem 1rem;
+    border: 1px solid #495E57;
+    background-color:#495E57;
+    border-radius: 5px;
+    width: 80%;
+    font-size: 1.25rem;
+    display: block;
+    color: #fff;
+    line-height: 25px;
   }
-  
+
+#hero {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url('../img/restaurant_inside.jpg');
+    background-size: cover;
+    background-position: 75%;
+    color: white;
+    min-height: 200px;
+    text-align: center;;
+}
+
+#hero p {
+    font-size: 2rem;
+    margin:0;
+    text-shadow: 2px 2px 4px #333333;
+}
+
+.cta { 
+    display: inline-block; 
+    color: rgba(255, 255, 255, 0.9);
+    width: 200px; 
+    font-weight: bold; 
+    font-size: 1.5rem;
+    padding: 8px; 
+    border: 3px solid #fff; 
+    text-align: center; 
+    outline: none; 
+    text-decoration: none; 
+    margin: 1rem;
+} 
+
+.cta:hover {
+    color:#fff;
+    background:#495E57;
+    border: 3px solid #495E57; 
+  }
+
+  .heading-shadow {
+    text-shadow: 1px 1px 4px #333333;
+  }
+
+footer {
+    background-color: #EDEFEE;
+    margin-top: 15px;
+    display: flex;
+    gap: 2rem 1rem;
+}
+
+footer img {
+    max-width: 50%;
+}
+
+
+footer p {
+    border-top: #333333;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    text-align: right;
+    padding-top: 1rem;;
+}
+
+@media (max-width: 800px) {
+    section {
+        flex-direction: column;   
+    }
+
+    .row {
+        flex-direction: column;
+        width: 100%;
+      }
+   
+    input{
+        width: 100%;
+    }
+
+    #button{
+        width: 100%;
+    }
+  }
+
+ * {box-sizing: border-box;}
+
+/* Style the navbar */
+.topnav {
+  overflow: hidden;
+  background-color: #e9e9e9;
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Navbar links on mouse-over */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Active/current link */
+.topnav a.active {
+  background-color: #2196F3;
+  color: white;
+}
+
+/* Style the input container */
+.topnav .login-container {
+  float: right;
+}
+
+/* Style the input field inside the navbar */
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  width: 150px; /* adjust as needed (as long as it doesn't break the topnav) */
+}
+
+/* Style the button inside the input container */
+.topnav .login-container button {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .login-container button:hover {
+  background: #ccc;
+}
+
+/* Add responsiveness - On small screens, display the navbar vertically instead of horizontally */
+@media screen and (max-width: 600px) {
+  .topnav .login-container {
+    float: none;
+  }
+  .topnav a, .topnav input[type=text], .topnav .login-container button {
+    float: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding: 14px;
+  }
+  .topnav input[type=text] {
+    border: 1px solid #ccc;
+  }
+}
+.show-read-more .more-text{
+       display: none;
+    }
+.show-read-more .more-text p{
+    align: justify;
+    }
+
+.specialization-detail {
+    border:1px solid #ccc;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.carousel-indicators .btn-option {
+    border: 1px solid #495E57;
+    background-color: #ccc;
+    position: relative;
+    float: right;
+    width: 83%;
+    margin-right: 0px;
+    height:5px;
+    overflow:auto;
+    padding-right: 10px;
+}
+
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.ml-1 {
+  margin-left: ($spacer * .25) !important;
+}
+
+.px-2 {
+  padding-left: ($spacer * .5) !important;
+  padding-right: ($spacer * .5) !important;
+}
+
+.p-3 {
+  padding: $spacer !important;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.top-bar {
+  background: #333;
+  color: #fff;
+  padding: 1rem;
+}
+
+
+.page-info {
+  margin-left: 1rem;
+}
+
+.error {
+  background: orangered;
+  color: #fff;
+  padding: 1rem;
+}
+
+.jumbotron {
+ background-image: url('{% static 'img/jumbotron-image.jpg' %}');
+  margin-top: 20px;
+}
