@@ -12,8 +12,8 @@ def calculate_overtime(request):
     if request.method == 'POST':
         form = OvertimeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return render(request, 'success.html')
+            employee = form.save()
+            return render(request, 'overtime_result.html', context={'employee':employee})
     else:
         form = OvertimeForm()
 
