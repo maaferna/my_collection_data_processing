@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block content %}
+<br>
+<br>
+<section class="container-section mb-4">
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div class="portfolio-box-caption">
+                <h1>Scraped Data</h1>
+                <ul>
+                    {% for link in links %}
+                        <li><p>{{ link.title }}</p><object type='application/pdf' data="{{ link.data }}">{{ link.data }}</object></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
