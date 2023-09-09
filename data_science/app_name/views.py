@@ -43,7 +43,7 @@ def result_overtime(request, employee_id):
 #Create a simple scraper to get information from a web page.
 def scrape_data(request):
     # URL of the web page you want to scrape
-    url = "https://portfolio-mparraf.herokuapp.com/"
+    url = "https://portfolio-mparraf.herokuapp.com"
 
     # Send an HTTP GET request to the URL
     response = requests.get(url)

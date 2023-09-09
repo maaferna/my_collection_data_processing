@@ -1,9 +1,8 @@
 {
-    "blog": [
+    "scrape": [
       {
-      "endpoint": "blog/index/",
-      "description": "Render all posts published with information on release date and author, and give a short description of this post.",
-      "href": "https://portfolio-mparraf.herokuapp.com/blog/index/"
+      "endpoint": "scrape/beutifulsoup/",
+      "description": "Create a simple scraper to get information from a web page. With BeautifulSoup & Requests libraries to analyze Web Page using text formatting HTML html.parser. Extract data of links referenced in this web page. This code pre-processes data and sends to the template an object that contains a list of anchors.Render scraped data of all links in this web page."
       },
       {
       "endpoint": "blog/post/<slug>",

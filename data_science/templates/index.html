@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
@@ -13,7 +15,15 @@
                 </div>
             </div>
             <div class="row">
-                <p class="d-none d-sm-block show-read-more p-3 mt-5">This project contains the source code and related files for resolving data science problems using Python. Explore external libraries how as Pandas, Matplotlib, Numpy, and others.</p>
+                <p class="d-none d-sm-block show-read-more p-3 mt-5">This project contains the source code and related files for resolving data science problems using Python. Explore external libraries how as Pandas, Matplotlib, Numpy, Beutiful Soup, and others.</p>
+            </div>
+            <div class="container-fluid">
+                <div class="d-flex flex-row">
+                    <img src="https://pandas.pydata.org/pandas-docs/stable/_static/pandas.svg" style="max-height: 5rem" alt="Pandas">
+                    <img src="https://user-images.githubusercontent.com/67586773/105040771-43887300-5a88-11eb-9f01-bee100b9ef22.png" style="max-height: 5rem" alt="Numpy">
+                    <img src="https://matplotlib.org/3.1.1/_static/logo2_compressed.svg" style="max-height: 5rem" alt="Matplotlib">
+                    <img src="https://sixfeetup.com/blog/an-introduction-to-beautifulsoup/@@images/27e8bf2a-5469-407e-b84d-5cf53b1b0bb6.png" style="max-height: 5rem" alt="Beutifil Soup">
+                </div>
             </div>
         </div>
     </div>

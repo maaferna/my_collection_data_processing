@@ -16,14 +16,25 @@
         <div class="row g-0">
             <div class="portfolio-box-caption">
                 <h1>Scraped Data</h1>
-                <ul>
+                <hr>
+                <div class="container">
+
+                </div>
+                <hr>
+                <div class="d-flex flex-row">
+                    <ul class="list-group">
                     {% for link in links %}
-                        <li><p>{{ link.title }}</p><object type='application/pdf' data="{{ link.data }}">{{ link.data }}</object></li>
+                        <h2>{{ link.title }}</h2>
+                        <li class="list-group-item">
+                            <object type='application/pdf' data="{{ link.data }}">{{ link.data }}</object>
+                        </li>
                     {% endfor %}
-                </ul>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
 
 {% endblock %}
