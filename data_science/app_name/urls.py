@@ -7,4 +7,6 @@ urlpatterns = [
     path('overtime/result/', result_overtime, name='result_overtime'),
     path('overtime/list/', overtime_list, name='list_overtime'),
     path('scrape/beutifulsoup/', scrape_data, name='scrape_data'),
+    path('get-tweets/', get_tweets, name='get_tweets'),
+    path('budget/xml', xml_budget, name='xml_budget'),
 ]

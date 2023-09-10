@@ -20,6 +20,8 @@ soupsieve = "==2.4.1"
 sqlparse = "==0.4.4"
 typing-extensions = "==4.7.1"
 requests = "*"
+tweepy = "*"
+python-decouple = "*"
 
 [dev-packages]
 

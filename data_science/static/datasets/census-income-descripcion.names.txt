@@ -1,0 +1,70 @@
+﻿| This data was extracted from the census bureau database found at
+| http://www.census.gov/ftp/pub/DES/www/welcome.html
+| Donor: Terran Lane and Ronny Kohavi
+|        Data Mining and Visualization
+|        Silicon Graphics.
+|        e-mail: terran@ecn.purdue.edu, ronnyk@sgi.com for questions.
+|
+| The data was split into train/test in approximately 2/3, 1/3
+| proportions using MineSet's MIndUtil mineset-to-mlc.
+|
+| Prediction task is to determine the income level for the person
+| represented by the record.  Incomes have been binned at the $50000
+| level to present a binary classification problem, much like the
+| original UCI/ADULT database.  The goal field of this data, however,
+| was drawn from the "total person income" field rather than the
+| "adjusted gross income" and may, therefore, behave differently than the
+| orginal ADULT goal field (- 50000, 50000+).
+
+
+|
+| More information detailing the meaning of the attributes can be
+| found in http://www.bls.census.gov/cps/cpsmain.htm
+| To make use of the data descriptions at this site, the following mappings
+| to the Census Bureau's internal database column names will be needed:
+|
+| age                                                AAGE
+| class of worker                                ACLSWKR
+| industry code                                        ADTIND
+| occupation code                                ADTOCC
+| adjusted gross income                                AGI
+| education                                        AHGA
+| wage per hour                                        AHRSPAY
+| enrolled in edu inst last wk                        AHSCOL
+| marital status                                AMARITL
+| major industry code                                AMJIND
+| major occupation code                                AMJOCC
+| mace                                                ARACE
+| hispanic Origin                                AREORGN
+| sex                                                ASEX
+| member of a labor union                        AUNMEM
+| reason for unemployment                        AUNTYPE
+| full or part time employment stat                AWKSTAT
+| capital gains                                        CAPGAIN
+| capital losses                                CAPLOSS
+| divdends from stocks                                DIVVAL
+| federal income tax liability                        FEDTAX
+| tax filer status                                FILESTAT
+| region of previous residence                        GRINREG
+| state of previous residence                        GRINST
+| detailed household and family stat                HHDFMX
+| detailed household summary in household        HHDREL
+| instance weight                                MARSUPWT
+| migration code-change in msa                        MIGMTR1
+| migration code-change in reg                        MIGMTR3
+| migration code-move within reg                MIGMTR4
+| live in this house 1 year ago                        MIGSAME
+| migration prev res in sunbelt                        MIGSUN
+| num persons worked for employer                NOEMP
+| family members under 18                        PARENT
+| total person earnings                                PEARNVAL
+| country of birth father                        PEFNTVTY
+| country of birth mother                        PEMNTVTY
+| country of birth self                                PENATVTY
+| citizenship                                        PRCITSHP
+| total person income                                PTOTVAL
+| own business or self employed                        SEOTR
+| taxable income amount                                TAXINC
+| fill inc questionnaire for veteran's admin        VETQVA
+| veterans benefits                                VETYN
+| weeks worked in year                                WKSWORK
