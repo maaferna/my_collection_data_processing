@@ -4,6 +4,8 @@ from django.conf import settings
 from django.http import JsonResponse
 import urllib.request, urllib.parse, urllib.error
 import xml.etree.ElementTree as ET
+from lxml import etree
+
 import ssl
 import os
 
@@ -95,8 +97,9 @@ def get_tweets(request):
    
     return JsonResponse(response_data)
 
-def xml_budget(request):
-    url = 'http://www.dipres.gob.cl/597/articles-155375_doc_xml.xml'
+def xml_books(request, author_name):
+    #If It need acces altrough url
+    url = ''
     module_dir = os.path.dirname(__file__)
     parent_directory = os.path.dirname(module_dir)
 
@@ -106,58 +109,61 @@ def xml_budget(request):
     ctx.verify_mode = ssl.CERT_NONE
 
     # Desired value to match
-    desired_value = "PRESIDENCIA DE LA REPÚBLICA"
-
+    desired_value = "ARTURO PEREZ-REVERTE"
+    xml_file_path = parent_directory + '/static/datasets/books.xml'
+    print(xml_file_path)
     try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            xml_data = response.content
-            root = ET.fromstring(xml_data)
-            print(root)
-    except:
-        xml_file_path = parent_directory + 'static/datasets/Presupuesto_2017.xml' 
         tree = ET.parse(xml_file_path)
-        #root = tree.getroot()
-        root = ET.fromstring(xml_data)  
+        root = tree.getroot()
+    except:
+        print("Error to upload file")
+    #response = requests.get(url)
+    #if response.status_code == 200:
+        #xml_data = response.content
+        #root = ET.fromstring(xml_data)
+        #root2 = etree.fromstring(xml_data)
     
-    # Find all <cabecera> and <cuerpo> elements
-    cabecera_elements = root.findall(".//cabecera")
 
-    # Initialize a list to store "monto_pesos" values
-    monto_pesos_values = [] 
+    '''
+    # Load and compile the XSD schema
+    #xsd = etree.XMLSchema(etree.parse(xml_file_path))
 
-    for cabecera in cabecera_elements:
-        nombre_element = cabecera.find("nombre")
-        # Check if "nombre" element exists and its text matches the desired value
-        if nombre_element is not None and nombre_element.text.strip() == desired_value.strip():
-            print(nombre_element.text)
-            # Extract the text from the <nombre> element in <cabecera>
-            cuerpo_elements = cabecera.findall("cuerpo")
-            print(cuerpo_elements)
-            # Iterate through "cuerpo" elements and extract "monto_pesos" values
-            for cuerpo in cuerpo_elements:
-                monto_pesos_element = cuerpo.find("monto_pesos")
-                if monto_pesos_element is not None:
-                    monto_pesos_values.append(monto_pesos_element.text)
+    # Validate the XML document against the XSD schema
+    is_valid = xsd.validate(root2)
 
-    # Now, "monto_pesos_values" contains all "monto_pesos" values associated with the "cabecera" elements
-    # where the "nombre" field matches the desired value
-    for monto_pesos in monto_pesos_values:
-        print(monto_pesos)
-    
-    print(monto_pesos_values)
+    if is_valid:
+        print("XML document is valid against the schema.")
+        # Print the schema as a string
+        print(etree.tostring(xsd.schema, pretty_print=True).decode('utf-8'))
+    else:
+        print("XML document is not valid against the schema.")
+    '''
 
-    # Access the children elements within 'matriz'
-    for child in root:
-        # You can access child elements and their data here
-        if child.tag == 'cabecera':
-            for element in child:
-                if element.tag == 'nombre' and element.text == 'SENADO':
-                    name = element.text
-                    print(name)
+    books = [] 
 
-                # Add more conditions for other elements within 'cabecera'
+    # Iterate through all book elements
+    for book in root.findall(".//item"):
+        author_element = book.find("auth")
+         # Check if the author element exists and its text contains the filter substring
+        if author_element is not None and author_name.strip().lower() in author_element.text.strip().lower():
+            # Extract the data element and store in dictionary variable
+            book_info = {
+                "id": book.get("isbn"),
+                "title": book.find("book").text,
+                "language": book.find("lang").text,
+                "price (EURO)": book.find("euro").text,
+                "publish_date": book.find("year").text,
+                "description": book.find("about").text,
+                "publisher": book.find("publ"),
+                "tags": book.find("tags"),
+                "img": book.find("img_url"),
+                "page": book.find("page")
+            }
+            # Store dictionarty to books list.
+            books.append(book_info)
+        
+        context = {'books': books}
 
 
-    return render(request, 'budget_xml/index.html')
+    return render(request, 'xml/index.html', context)
 

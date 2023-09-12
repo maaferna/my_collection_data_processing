@@ -22,6 +22,7 @@ typing-extensions = "==4.7.1"
 requests = "*"
 tweepy = "*"
 python-decouple = "*"
+lxml = "*"
 
 [dev-packages]
 
