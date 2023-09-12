@@ -17,6 +17,18 @@
 
         </div>
         <div class="container">
+            <div class="row">
+                <h2>Search Form</h2>
+                <form method="get" action="{% url 'xml_books' %}">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="author_name">Name:</label>
+                        <input type="text" class="form-control" id="author_name" name="author_name" placeholder="Enter a value">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <hr>
             <div class="row mt-3">
                 {% for item in books %}
                 <div class="col-sm-6 col-xs-12">
@@ -34,9 +46,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12 ">
+                                    <h6 class="card-subtitle mb-2 text-muted">Lang: <strong>{{ item.language }}</strong></h6>
+                                </div>
+                                <div class="col-lg-3 col-sm-12 ">
                                     <h6 class="card-subtitle mb-2 text-muted">Year: <strong>{{ item.publish_date }}</strong></h6>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 ">
+                                <div class="col-lg-3 col-sm-12 ">
                                     <h6 class="card-subtitle mb-2 text-muted">Price: <strong>{{ item.price }}</strong></h6>
                                 </div>
                             </div>

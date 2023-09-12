@@ -152,7 +152,7 @@ def xml_books(request):
                 book_info = {
                     "id": book.find("isbn").text,
                     "title": book.find("book").text,
-                    "language": book.find("lang").text,
+                    "language": (book.find("lang").text).capitalize(),
                     "price": book.find("euro").text,
                     "publish_date": book.find("year").text,
                     "description": book.find("about").text,
