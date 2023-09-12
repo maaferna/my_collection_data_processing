@@ -8,5 +8,5 @@ urlpatterns = [
     path('overtime/list/', overtime_list, name='list_overtime'),
     path('scrape/beutifulsoup/', scrape_data, name='scrape_data'),
     path('get-tweets/', get_tweets, name='get_tweets'),
-    path('books-by-author/<str:author_name>/', xml_books, name='xml_books'),
+    path('books-by-author/', xml_books, name='xml_books'),
 ]

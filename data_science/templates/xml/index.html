@@ -1,5 +1,63 @@
-{% for item in books %}
+{% extends 'base.html' %}
 
- {{ item.title }}
+{% block content %}
 
-{% endfor %}
+<main class="container border d-flex aligns-items-center justify-content-center mb-5">
+    <h1>Catalogos de Vehiculos</h1>
+</main>
+<section class="container-section mb-4">
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div class="portfolio-box-caption">
+                Books Store
+            </div>
+        </div>
+        <hr>
+        <div>
+
+        </div>
+        <div class="container">
+            <div class="row mt-3">
+                {% for item in books %}
+                <div class="col-sm-6 col-xs-12">
+                    <div class="card text-dark bg-light mb-3" style="height: 80vh; align-items: center;">
+                        <img src="{{ item.img }}" class="card-img-top img-fluid" style="height: 15rem;"alt="{{ item.title }}">
+                        <div class="card-header">
+                            <h2 class="card-title">{{ item.title }}</h2>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-12 ">
+                                    <h6 class="card-subtitle mb-2 text-muted">ISBN: <strong>{{ item.id }}</strong></h6>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 ">
+                                    <h6 class="card-subtitle mb-2 text-muted">Page: <strong>{{ item.page }}</strong></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-12 ">
+                                    <h6 class="card-subtitle mb-2 text-muted">Year: <strong>{{ item.publish_date }}</strong></h6>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 ">
+                                    <h6 class="card-subtitle mb-2 text-muted">Price: <strong>{{ item.price }}</strong></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h6 class="card-subtitle mb-2 text-muted">Publisher By: <strong>{{ item.publisher }}</strong></h6>
+                            </div>
+                            <div class="row">
+                                <h6 class="card-subtitle mb-2 text-muted">Tags: <strong>{{ item.tags }}</strong></h6>
+                            </div>
+                        </div>
+                        <div class="card-body" style="height: 15rem; overflow:auto;">
+                            <p class="cart-text d-sm-block show-read-more p-3 mt-2">{{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

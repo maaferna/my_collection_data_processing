@@ -97,7 +97,7 @@ def get_tweets(request):
    
     return JsonResponse(response_data)
 
-def xml_books(request, author_name):
+def xml_books(request):
     #If It need acces altrough url
     url = ''
     module_dir = os.path.dirname(__file__)
@@ -144,23 +144,25 @@ def xml_books(request, author_name):
     # Iterate through all book elements
     for book in root.findall(".//item"):
         author_element = book.find("auth")
-         # Check if the author element exists and its text contains the filter substring
-        if author_element is not None and author_name.strip().lower() in author_element.text.strip().lower():
-            # Extract the data element and store in dictionary variable
-            book_info = {
-                "id": book.get("isbn"),
-                "title": book.find("book").text,
-                "language": book.find("lang").text,
-                "price (EURO)": book.find("euro").text,
-                "publish_date": book.find("year").text,
-                "description": book.find("about").text,
-                "publisher": book.find("publ"),
-                "tags": book.find("tags"),
-                "img": book.find("img_url"),
-                "page": book.find("page")
-            }
-            # Store dictionarty to books list.
-            books.append(book_info)
+        if request.GET.get("author_name", None) != None:
+            author_name = request.GET.get("author_name")
+            # Check if the author element exists and its text contains the filter substring
+            if author_element is not None and author_name.strip().lower() in author_element.text.strip().lower():
+                # Extract the data element and store in dictionary variable
+                book_info = {
+                    "id": book.find("isbn").text,
+                    "title": book.find("book").text,
+                    "language": book.find("lang").text,
+                    "price": book.find("euro").text,
+                    "publish_date": book.find("year").text,
+                    "description": book.find("about").text,
+                    "publisher": (book.find("publ").text).capitalize(),
+                    "tags": book.find("tags").text,
+                    "img": 'https://' + book.find("img_url").text,
+                    "page": book.find("page").text
+                }
+                # Store dictionarty to books list.
+                books.append(book_info)
         
         context = {'books': books}
 

@@ -536,9 +536,6 @@ select:disabled {
 button,
 [type=button],
 [type=reset],
-[type=submit] {
-  -webkit-appearance: button;
-}
 button:not(:disabled),
 [type=button]:not(:disabled),
 [type=reset]:not(:disabled),
@@ -596,7 +593,6 @@ legend + * {
 
 [type=search] {
   outline-offset: -2px;
-  -webkit-appearance: textfield;
 }
 ::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -608,7 +604,6 @@ legend + * {
 
 ::file-selector-button {
   font: inherit;
-  -webkit-appearance: button;
 }
 output {
   display: inline-block;
@@ -763,7 +758,7 @@ progress {
     background-position: 75%;
     color: white;
     min-height: 200px;
-    text-align: center;;
+    text-align: center;
 }
 
 #hero p {
@@ -822,7 +817,6 @@ progress {
     background-attachment: scroll;
     background-size: cover;
     flex: 1 0 auto;
-
 }
 
 
@@ -1445,7 +1439,7 @@ nav-item li ul li {
     }
 
 .show-read-more .more-text p{
-    align: justify;
+    align-content: justify;
     }
 
 .specialization-detail {
@@ -1511,6 +1505,13 @@ nav-item li ul li {
 .mt-0 {
   margin-top: 0 !important;
 }
+:root {
+  --spacer-multiplier: 0.25;
+}
+.ml-1 {
+  margin-left: calc(var(--spacer-multiplier) * var(--spacer)) !important;
+}
+
 
 * {
   margin: 0;
