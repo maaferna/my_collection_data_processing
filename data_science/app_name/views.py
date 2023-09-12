@@ -144,27 +144,36 @@ def xml_books(request):
     # Iterate through all book elements
     for book in root.findall(".//item"):
         author_element = book.find("auth")
-        if request.GET.get("author_name", None) != None:
+        title_element = book.find("book")
+        if request.GET.get("author_name", None) != None and request.GET.get("title", None) != None:
             author_name = request.GET.get("author_name")
+            title = request.GET.get("title")
             # Check if the author element exists and its text contains the filter substring
-            if author_element is not None and author_name.strip().lower() in author_element.text.strip().lower():
+            if author_element is not None and author_name.strip().lower() in author_element.text.strip().lower() and title.strip().lower() in title_element.text.strip().lower():
                 # Extract the data element and store in dictionary variable
-                book_info = {
-                    "id": book.find("isbn").text,
-                    "title": book.find("book").text,
-                    "language": (book.find("lang").text).capitalize(),
-                    "price": book.find("euro").text,
-                    "publish_date": book.find("year").text,
-                    "description": book.find("about").text,
-                    "publisher": (book.find("publ").text).capitalize(),
-                    "tags": book.find("tags").text,
-                    "img": 'https://' + book.find("img_url").text,
-                    "page": book.find("page").text
-                }
-                # Store dictionarty to books list.
-                books.append(book_info)
+                try:
+                    book_info = {
+                        "id": book.find("isbn").text,
+                        "title": book.find("book").text,
+                        "language": (book.find("lang").text).capitalize(),
+                        "price": book.find("euro").text,
+                        "publish_date": book.find("year").text,
+                        "description": book.find("about").text,
+                        "publisher": (book.find("publ").text).capitalize(),
+                        "tags": book.find("tags").text,
+                        "img": 'https://' + book.find("img_url").text,
+                        "page": book.find("page").text
+                    }
+                except:
+                    continue
+                # Store dictionarty to books list.Pass if book register not contain text
+                if book_info["description"] == None:
+                    pass
+                else:
+                    books.append(book_info)
+                
         
-        context = {'books': books}
+        context = {'books': books, 'author': author_name}
 
 
     return render(request, 'xml/index.html', context)
