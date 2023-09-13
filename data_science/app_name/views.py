@@ -19,8 +19,8 @@ from .utils import *
 import requests
 from bs4 import BeautifulSoup
 import tweepy
-import xml.etree.ElementTree as ET
 from decouple import config
+import re
 
 # Create your views here.
 
@@ -71,7 +71,6 @@ def scrape_data(request):
 
         #Extract data of links referenced in this web page. This code pre-processes data and sends to the template an object that contains a list of anchors.
         links = [{ 'data': url +link.get('data'), 'title': link.get('title') } for link in soup.find_all('object')]
-        print(links)
         # Render scraped data of all links in this web page.
         context = { 'links': links }
         return render(request, 'scraper/scraped_links.html', context)
@@ -155,11 +154,11 @@ def xml_books(request):
                     book_info = {
                         "id": book.find("isbn").text,
                         "title": book.find("book").text,
-                        "language": (book.find("lang").text).capitalize(),
+                        "language": book.find("lang").text.capitalize(),
                         "price": book.find("euro").text,
                         "publish_date": book.find("year").text,
                         "description": book.find("about").text,
-                        "publisher": (book.find("publ").text).capitalize(),
+                        "publisher": book.find("publ").text.capitalize(),
                         "tags": book.find("tags").text,
                         "img": 'https://' + book.find("img_url").text,
                         "page": book.find("page").text
@@ -178,3 +177,30 @@ def xml_books(request):
 
     return render(request, 'xml/index.html', context)
 
+def regex(request):
+    module_dir = os.path.dirname(__file__)
+    parent_directory = os.path.dirname(module_dir)
+    file_path = parent_directory + '/static/datasets/Regex sample file.txt'
+    # Open and read the text file
+    with open(file_path, 'r') as file:
+        contents = file.read()
+
+    with open(file_path, 'r') as file:  
+        contents_by_line = file.readlines()
+        
+    # Use regular expression to find all numbers
+    numbers = re.findall(r'\d+', contents)
+    print(numbers)
+    # Use regular expression to find all line to contain only a number.
+    line_with_digits = []
+    for line in contents_by_line:
+        # Use regular expression to check if the line is a number
+        if re.match(r'^\d+$', line.strip()):
+            line_with_digits.append(line.strip())
+
+    #print(numbers)
+    print(line_with_digits)
+
+    context = {}
+
+    return render(request, 'regex/index.html', context)
