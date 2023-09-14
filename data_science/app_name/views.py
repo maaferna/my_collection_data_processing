@@ -190,7 +190,6 @@ def regex(request):
         
     # Use regular expression to find all numbers
     numbers = re.findall(r'\d+', contents)
-    print(numbers)
     # Use regular expression to find all line to contain only a number.
     line_with_digits = []
     for line in contents_by_line:
@@ -198,9 +197,27 @@ def regex(request):
         if re.match(r'^\d+$', line.strip()):
             line_with_digits.append(line.strip())
 
-    #print(numbers)
-    print(line_with_digits)
+    #Define Regex expresion
+    url_pattern = r'\b(?:https?://|www\.)\S+\b'
 
+    #Search in text to find all the URL that begin with www. / https or http.
+    found_urls = []
+    found_urls_with_startwish = []
+    try:
+        matches = re.finditer(url_pattern, contents)
+        for match in matches:
+            found_urls.append(match.group(0))
+        
+        #Find line that begin with some text
+        for line in contents_by_line:
+            line.rstrip()
+            if line.startswith("Terminology:"):
+                found_urls_with_startwish.append(line)
+
+    except FileNotFoundError:
+        print("File not found.")
+
+    print(found_urls_with_startwish)
     context = {}
 
     return render(request, 'regex/index.html', context)
