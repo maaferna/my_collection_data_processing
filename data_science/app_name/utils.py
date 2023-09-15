@@ -1,3 +1,4 @@
+import os
 def calculate_overtime_pay(self):
     if self.hours_worked <= self.overtime_threshold:
         # No overtime, pay at regular rate
@@ -10,3 +11,6 @@ def calculate_overtime_pay(self):
         total_pay = regular_pay + overtime_pay
 
     return total_pay
+
+module_dir = os.path.dirname(__file__)
+parent_directory = os.path.dirname(module_dir)

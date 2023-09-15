@@ -5,10 +5,11 @@ from django.http import JsonResponse
 import urllib.request, urllib.parse, urllib.error
 import xml.etree.ElementTree as ET
 from lxml import etree
+from collections import Counter
 
 import ssl
 import os
-
+import string
 
 from .forms import *
 from .models import *
@@ -218,6 +219,36 @@ def regex(request):
         print("File not found.")
 
     print(found_urls_with_startwish)
+    context = {}
+
+    return render(request, 'regex/index.html', context)
+
+
+def file_analytic(request):
+    file_path = parent_directory + '/static/datasets/Regex sample file.txt'
+    # Open and read the text file
+    languages = ['Java', 'C++', 'PHP', 'Ruby', 'Basic', 'Perl', 'JavaScript', 'Python']
+    # Initialize the dictionary with zero counts for each language
+    analytics = {lan: 0 for lan in languages}
+
+    with open(file_path, 'r') as file:
+        contents = file.readlines()
+
+    for line in contents:
+        for lan in languages:
+            if lan in line:
+                analytics[lan] += 1
+
+    # Sort the dictionary by value
+    lst = list()
+    for key, val in list(analytics.items()):
+        lst.append((val, key))
+
+    lst.sort(reverse=True)
+
+    for key, val in lst[:10]:
+        print(key, val)
+    
     context = {}
 
     return render(request, 'regex/index.html', context)
