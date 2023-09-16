@@ -11,4 +11,5 @@ urlpatterns = [
     path('books-by-author/', xml_books, name='xml_books'),
     path('regex/', regex, name='regex'),
     path('file-analytics/', file_analytic, name='file_analytic'),
+    path('pandas/data-cleaning', data_cleaning, name='pandas-data-clening'),
 ]

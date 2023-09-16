@@ -23,6 +23,7 @@ requests = "*"
 tweepy = "*"
 python-decouple = "*"
 lxml = "*"
+pandas = "*"
 
 [dev-packages]
 

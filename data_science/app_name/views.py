@@ -6,6 +6,7 @@ import urllib.request, urllib.parse, urllib.error
 import xml.etree.ElementTree as ET
 from lxml import etree
 from collections import Counter
+import re
 
 import ssl
 import os
@@ -21,7 +22,8 @@ import requests
 from bs4 import BeautifulSoup
 import tweepy
 from decouple import config
-import re
+import pandas as pd
+
 
 # Create your views here.
 
@@ -252,3 +254,30 @@ def file_analytic(request):
     context = {}
 
     return render(request, 'regex/index.html', context)
+
+
+def data_cleaning(request):
+    file_path = parent_directory + '/static/datasets/olympics.csv'
+    df = pd.read_csv(file_path, index_col=0, skiprows=1)
+    df_sorted = df.sort_values(by='Combined total', ascending=False)  # Change 'ascending' to False retrieve the countries with more medals gotten.
+    # The type of medals area is defined with a number (01: Gold, 02: Silver, 03:Bronze). The next line was used to rename the column name and retrieve data with a better description.
+    for col in df_sorted.columns:
+        if col[:2]=='01':
+            df_sorted.rename(columns={col:'Gold'+col[4:]}, inplace=True)
+        if col[:2]=='02':
+            df_sorted.rename(columns={col:'Silver'+col[4:]}, inplace=True)
+        if col[:2]=='03':
+            df_sorted.rename(columns={col:'Bronze'+col[4:]}, inplace=True)
+        if col[:1]=='№':
+            df_sorted.rename(columns={col:'#'+col[1:]}, inplace=True)
+    
+    # To extract the ID of country was applied the split() function in the column name.
+    names_ids = df_sorted.index.str.split('\s\(') # split the index by '('
+    df_sorted.index = names_ids.str[0] # the [0] element is the country name (new index) 
+    df_sorted['ID'] = names_ids.str[1].str[:3] # the [1] element is the abbreviation or ID (take first 3 characters from that)
+    df = pd.DataFrame(df_sorted)
+    # Rename the column at position 0 (Column1) to 'New Name'
+    # Assuming you have your DataFrame df already defined
+    df_html = df[1:].to_html(classes='table table-bordered table-striped', index=True)
+    context = {'data': df_html}
+    return render(request, 'pandas/data-cleaning.html', context)
