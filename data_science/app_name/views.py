@@ -279,5 +279,29 @@ def data_cleaning(request):
     # Rename the column at position 0 (Column1) to 'New Name'
     # Assuming you have your DataFrame df already defined
     df_html = df[1:].to_html(classes='table table-bordered table-striped', index=True)
+    answer= []
+    max_difference_gold = abs(df['Gold'][1:] - df['Gold.1'][1:]).idxmax()
+    # Filter the DataFrame to get the row for "Max Gol difference"
+    gb_row = df.loc[max_difference_gold]
+    # Get the 'Gold_Difference' value for "Max Gol difference"
+    gold_difference_gb = gb_row['Gold'] - gb_row['Gold.1']
+    # Add a condition to filter only Countries that gained at least one Gold medal for each season (Summer Winter).
+    condition = (df['Gold'] >=1) & (df['Gold.1'] >=1)
+    new_df = df[condition]
+
+    # This function generates a Series named 'Points.' This Series represents a weighted value system, where each gold medal (Gold.2) is assigned a weight of 3 points, silver medals (Silver.2) carry 2 points, and bronze medals (Bronze.2) contribute 1 point. The function should return the resulting column as a Series object, with the country names serving as the indices.
+    df['Points'] = pd.Series(df['Gold.2'] * 3 + df['Silver.2'] * 2 + df['Bronze.2'])
+
+    answer.append(max_difference_gold)
+    answer.append(gold_difference_gb)
     context = {'data': df_html}
+
+    # The country that has won the most gold medals in summer games is ____. Using idxmax()
+    print(df['Gold'][1:].idxmax())
+    print((abs(df['Gold'][1:] - df['Gold.1'][1:])).idxmax())
+    print((abs(new_df['Gold'] - new_df['Gold.1'])/new_df['Gold.2']).idxmax())
+    print(df['Points'][1:])
+    #
     return render(request, 'pandas/data-cleaning.html', context)
+
+
