@@ -307,7 +307,24 @@ def data_cleaning(request):
 
 def data_cleaning_census(request):
     file_path = parent_directory + '/static/datasets/census.csv'
-    census_df = pd.read_csv(file_path)
-    print(census_df)
+    df = pd.read_csv(file_path)
+    # Identify the state that encompasses the greatest number of counties. The {{ result.0 }} is the State with more Counties in the United State they are {{ result.1 }}
+    greatest_counties = df.groupby(['STNAME']).sum()['COUNTY'].idxmax()
+    quantity_greatest_county = df.groupby(['STNAME']).sum()['COUNTY'].max()
+    print(greatest_counties, quantity_greatest_county)
+        # Find the top ten populous states in descendent order, using the column CENSUS2010POP. To make more complex was filtered with code 50 to group by Counties
+    # The key for SUMLEV is as follows:
+    # 040 = State and/or Statistical Equivalent
+    # 050 = County and /or Statistical Equivalent
+    condition_state = df['SUMLEV'] == 50  # Select only STATE, Drop rows that contain state data
+    new_condition_state = df[condition_state]
+    # Sort the county-level data by state ('STNAME') and population ('CENSUS2010POP') in descending order
+    most_population_state = new_condition_state.sort_values(['STNAME', 'CENSUS2010POP'], ascending=[True, False])
+    # Calculate the total population for each state and sort them in descending order
+    population = most_population_state.groupby('STNAME').agg('sum').sort_values('CENSUS2010POP', ascending=False)
+    highest_state = population.head(10).reset_index()
+
+    print(highest_state[['STNAME', 'CENSUS2010POP']])
+
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
