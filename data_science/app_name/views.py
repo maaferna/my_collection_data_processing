@@ -305,3 +305,9 @@ def data_cleaning(request):
     return render(request, 'pandas/data-cleaning.html', context)
 
 
+def data_cleaning_census(request):
+    file_path = parent_directory + '/static/datasets/census.csv'
+    census_df = pd.read_csv(file_path)
+    print(census_df)
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
