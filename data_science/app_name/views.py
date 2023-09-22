@@ -304,6 +304,15 @@ def data_cleaning(request):
     #
     return render(request, 'pandas/data-cleaning.html', context)
 
+def find_min_max(row):
+    # Select the columns of interest
+    columns_of_interest = ['POPESTIMATE2010', 'POPESTIMATE2011', 'POPESTIMATE2012', 'POPESTIMATE2013', 'POPESTIMATE2014', 'POPESTIMATE2015']
+    # Find the minimum and maximum values for the selected columns in the row
+    min_value = row[columns_of_interest].min()
+    max_value = row[columns_of_interest].max()
+
+    return pd.Series({'MIN_POP': min_value, 'MAX_POP': max_value, 'DIF_POP': max_value-min_value})
+
 
 def data_cleaning_census(request):
     file_path = parent_directory + '/static/datasets/census.csv'
@@ -312,7 +321,7 @@ def data_cleaning_census(request):
     greatest_counties = df.groupby(['STNAME']).sum()['COUNTY'].idxmax()
     quantity_greatest_county = df.groupby(['STNAME']).sum()['COUNTY'].max()
     print(greatest_counties, quantity_greatest_county)
-        # Find the top ten populous states in descendent order, using the column CENSUS2010POP. To make more complex was filtered with code 50 to group by Counties
+    # Find the top ten populous states in descendent order, using the column CENSUS2010POP. To make more complex was filtered with code 50 to group by Counties
     # The key for SUMLEV is as follows:
     # 040 = State and/or Statistical Equivalent
     # 050 = County and /or Statistical Equivalent
@@ -324,7 +333,18 @@ def data_cleaning_census(request):
     population = most_population_state.groupby('STNAME').agg('sum').sort_values('CENSUS2010POP', ascending=False)
     highest_state = population.head(10).reset_index()
 
-    print(highest_state[['STNAME', 'CENSUS2010POP']])
+    # The next task is to identify the City Name with the largest absolute change in population between the years 2010 and 2015. 
+    # The code calculates the population change for each county and selects the top ten city with the highest change.  
+
+    df_pop = df[condition_state]
+    # Apply the function to each row to find the minimum and maximum values
+    min_max_values = df_pop.apply(find_min_max, axis=1)
+
+    # Concatenate the resulting DataFrame with the original DataFrame
+    df = pd.concat([df_pop, min_max_values], axis=1)
+
+    pop_diff = df[['CTYNAME', 'DIF_POP']].sort_values('DIF_POP' ,ascending=False)
+    print(pop_diff.head(10).rename(columns={'CTYAME':'City Name'}))
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
