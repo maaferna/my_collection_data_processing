@@ -344,7 +344,16 @@ def data_cleaning_census(request):
     df = pd.concat([df_pop, min_max_values], axis=1)
 
     pop_diff = df[['CTYNAME', 'DIF_POP']].sort_values('DIF_POP' ,ascending=False)
-    print(pop_diff.head(10).rename(columns={'CTYAME':'City Name'}))
+    
+    condition_region = (df['SUMLEV']==50) & (df['REGION'] ==1) | (df['REGION'] ==2)
+    region_df = df.copy()
+    region_df = region_df[condition_region]
+    condition_starts_name = region_df['CTYNAME'].str.startswith('Washington')
+    start_city = region_df[condition_starts_name]
+    condition_comparation_population =  start_city['POPESTIMATE2015'] > start_city['POPESTIMATE2014']
+    fiend_counties =  start_city[condition_comparation_population]
+    print(fiend_counties[['STNAME', 'CTYNAME']])
+
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
