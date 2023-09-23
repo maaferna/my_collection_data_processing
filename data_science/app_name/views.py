@@ -23,7 +23,7 @@ from bs4 import BeautifulSoup
 import tweepy
 from decouple import config
 import pandas as pd
-
+import numpy as np
 
 # Create your views here.
 
@@ -344,15 +344,90 @@ def data_cleaning_census(request):
     df = pd.concat([df_pop, min_max_values], axis=1)
 
     pop_diff = df[['CTYNAME', 'DIF_POP']].sort_values('DIF_POP' ,ascending=False)
+
+    #Query the dataset to retrieve parameters passed through GET methods in the URL for columns related to regions and the starting city name.
+    # Validate if there has been an increase in population from 2014 to 2015 for the specified counties using conditional filtering and string operations. The code then extracts and returns these counties as a DataFrame."
     
+    #filter region condition
     condition_region = (df['SUMLEV']==50) & (df['REGION'] ==1) | (df['REGION'] ==2)
     region_df = df.copy()
     region_df = region_df[condition_region]
+    #Filter county name that start with some text.
     condition_starts_name = region_df['CTYNAME'].str.startswith('Washington')
     start_city = region_df[condition_starts_name]
+    #Validate increase Population 2015/2016
     condition_comparation_population =  start_city['POPESTIMATE2015'] > start_city['POPESTIMATE2014']
     fiend_counties =  start_city[condition_comparation_population]
     print(fiend_counties[['STNAME', 'CTYNAME']])
+
+
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
+
+def data_read_excel_file(request):
+    file_path = parent_directory + '/static/datasets/Energy Indicators.xls'
+    file_path2 = parent_directory + '/static/datasets/world_bank.csv'
+    file_path3 = parent_directory + '/static/datasets/scimagojr-3.xlsx'
+    
+    #This project involves loading energy-related data from the files with xls, csv, xlsx extension
+    
+    # Read energy data from an Excel file, skipping 17 rows from the top
+    # and 38 rows from the bottom to exclude header and footer information.
+    energy = pd.read_excel(file_path, skiprows=17, skipfooter=38)
+
+    # Drop the first and second columns of the 'energy' DataFrame to remove unnecessary data.
+    energy.drop(energy.columns[[0, 1]], axis=1, inplace=True)
+
+    # Rename the columns of the 'energy' DataFrame for clarity and consistency.
+    energy.columns = ['Country', 'Energy Supply', 'Energy Supply per Capita', '% Renewable']
+    
+    # Replace '...' entries in the 'Energy Supply' column with NaN (Not a Number) values to represent missing or incomplete data.
+    # Should be import numpy as np in the header of file
+    energy.loc[energy['Energy Supply'] == '...'] = np.NaN
+    # Drop rows with missing data (NaN values) from the 'energy' DataFrame.
+    energy = energy.dropna()
+
+    # Convert Energy to gigajoules
+    energy['Energy Supply'] *= 1000000
+
+    # Rename entries for Country Columns
+    energy['Country'] = energy['Country'].replace('Iran (Islamic Republic of)', 'Iran')
+    energy['Country'] = energy['Country'].str.replace('\(.*\)','')
+    energy['Country'] = energy['Country'].str.replace('\,\ ', ' ')
+    energy['Country'] = energy['Country'].str.replace(r'\d+', '', regex=True)
+    energy['Country'] = energy['Country'].replace('Republic of Korea', 'South Korea')
+    #energy['Country'] = energy['Country'].replace('China2', 'China')
+    #energy['Country'] = energy['Country'].replace('France6', 'France')
+    energy['Country'] = energy['Country'].replace('United States of America', 'United States')
+    energy['Country'] = energy['Country'].replace('United Kingdom of Great Britain and Northern Ireland','United Kingdom')
+    energy['Country'] = energy['Country'].replace('China, Hong Kong Special Administrative Region3', 'Hong Kong')
+
+    # Read Gross domestic product, that represent is a measure of the size and health of a country's economy over a period of time   
+    # Install in virtual enviroment pipenv install xlrd
+    gdp = pd.read_csv(file_path2, skiprows=4)
+    # Rename Country Name for consitency with energy DataFrame
+    gdp['Country Name'] = gdp['Country Name'].replace({'Korea, Rep.':'South Korea','Iran, Islamic Rep.':'Iran','Hong Kong SAR, China':'Hong Kong'})
+    # Rename the 'Country Name' column to 'Country' in the 'GDP' DataFrame for consistency with Country column in energy DataFrame.
+    gdp = gdp.rename(columns={'Country Name':'Country'})
+
+    # Install in virtual enviroment pipenv install openpyxl
+    power_energy = pd.read_excel(file_path3)
+    # Select top 10 countries of Ranking
+    power_energy_ranking = power_energy[0:10]
+
+    # Merge the 'gdp' and 'power_energy_ranking' DataFrames using an inner join on the 'Country' column.
+    gdp_merge_power_energy_ranking = pd.merge(gdp, power_energy_ranking,how='inner',left_on='Country', right_on='Country')
+
+    # Merge the 'gdp_merge_power_energy_ranking' and 'energy' DataFrames using an inner join on the 'Country' column.
+    merges_data = pd.merge(gdp_merge_power_energy_ranking, energy,how='inner',left_on='Country', right_on='Country')
+
+    # Re-Define index how Contry columns 
+    merges_data = merges_data.set_index('Country')
+
+    data = merges_data[['Rank', 'Documents', 'Citable documents', 'Citations', 'Self-citations', 'Citations per document', 'H index', 'Energy Supply', 'Energy Supply per Capita', '% Renewable', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015']]
+    
+    data = data.sort_values('Rank')
+    print(data)
 
 
     context = {}

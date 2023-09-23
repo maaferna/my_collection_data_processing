@@ -24,6 +24,8 @@ tweepy = "*"
 python-decouple = "*"
 lxml = "*"
 pandas = "*"
+xlrd = "*"
+openpyxl = "*"
 
 [dev-packages]
 
