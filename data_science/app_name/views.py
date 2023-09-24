@@ -413,7 +413,7 @@ def data_read_excel_file(request):
     # Install in virtual enviroment pipenv install openpyxl
     power_energy = pd.read_excel(file_path3)
     # Select top 10 countries of Ranking
-    power_energy_ranking = power_energy[0:10]
+    power_energy_ranking = power_energy[0:15]
 
     # Merge the 'gdp' and 'power_energy_ranking' DataFrames using an inner join on the 'Country' column.
     gdp_merge_power_energy_ranking = pd.merge(gdp, power_energy_ranking,how='inner',left_on='Country', right_on='Country')
@@ -428,10 +428,48 @@ def data_read_excel_file(request):
     
     data = data.sort_values('Rank')
     
+    answer = []
     # Retrieve the Avarage energy between 2006 and 2015
-    top10_avg_condition = data[['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']]
-    top10_avg_rank = top10_avg_condition.mean(axis=1).sort_values(ascending=False)
-    print(top10_avg_rank)
+    top15_avg_condition = data[['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']]
+    top15_avg_rank = top15_avg_condition.mean(axis=1).sort_values(ascending=False)
+    
+    # In this analysis, we aim to calculate the extent of GDP fluctuation over a 10-year duration for the nation holding the 4th position in terms of its average GDP.
+
+    data['avg_gdp'] = data[['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']].mean(axis=1)
+    data.sort_values("avg_gdp", ascending=False, inplace=True)
+    abs_value = abs(data.iloc[3]['2015']- data.iloc[3]['2006'])
+    country = data.index[3]
+    answer.append(abs_value)
+    answer.append(country)
+
+    # Retrieve the country with the lowest percentage of renewable energy and reporting the name of the country along with its corresponding percentage.
+    lower_index = data['% Renewable'].idxmin()
+    lower_percentage = round(data['% Renewable'].min(), 1)
+    lower_percentage = f"{lower_percentage}%"
+
+    answer.append(lower_index)
+    answer.append(lower_percentage)
+
+    # Calculate a new column representing the ratio of Self-Citations to Total Citations. Determine the maximum value within this new column and identify the country with the highest ratio.
+    data['Ratio'] = data['Self-citations'] / data['Citations']
+    lower_index_ratio = data['Ratio'].idxmin()
+    lower_percentage_ratio = round(data['Ratio'].min(), 3)
+
+    # Generate a new column to estimate the population by using the Energy Supply and Energy Supply per capita values. Determine the third most populous country based on this population estimate.
+    # Convert columns to numeric and handle non-numeric values
+    data['Energy Supply'] = pd.to_numeric(data['Energy Supply'], errors='coerce')
+    data['Energy Supply per Capita'] = pd.to_numeric(data['Energy Supply per Capita'], errors='coerce')
+
+    # Fill missing values with 0 or other appropriate values
+    data['Energy Supply'].fillna(0, inplace=True)
+    data['Energy Supply per Capita'].fillna(0, inplace=True)
+
+    # Perform the division and round
+    data['PopEstimate'] = (data['Energy Supply'] / data['Energy Supply per Capita']).round()
+
+    data.sort_values('PopEstimate', ascending=False, inplace=True)
+    estimate_pop = data.iloc[2].name  
+
 
 
     context = {}
