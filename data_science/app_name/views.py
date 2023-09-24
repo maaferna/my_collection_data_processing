@@ -427,7 +427,11 @@ def data_read_excel_file(request):
     data = merges_data[['Rank', 'Documents', 'Citable documents', 'Citations', 'Self-citations', 'Citations per document', 'H index', 'Energy Supply', 'Energy Supply per Capita', '% Renewable', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015']]
     
     data = data.sort_values('Rank')
-    print(data)
+    
+    # Retrieve the Avarage energy between 2006 and 2015
+    top10_avg_condition = data[['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']]
+    top10_avg_rank = top10_avg_condition.mean(axis=1).sort_values(ascending=False)
+    print(top10_avg_rank)
 
 
     context = {}
