@@ -26,6 +26,7 @@ lxml = "*"
 pandas = "*"
 xlrd = "*"
 openpyxl = "*"
+matplotlib = "*"
 
 [dev-packages]
 

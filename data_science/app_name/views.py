@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 from lxml import etree
 from collections import Counter
 import re
+# To generate images
+from io import BytesIO
+import base64
 
 import ssl
 import os
@@ -24,6 +27,7 @@ import tweepy
 from decouple import config
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Create your views here.
 
@@ -477,6 +481,17 @@ def data_read_excel_file(request):
     # A correlation coefficient of 0.79 suggests a strong positive linear relationship between the ratio of citable documents to the population (per person) and the energy supply per capita. In other words, as the energy supply per capita increases, there tends to be a corresponding increase in the ratio of citable documents to the population. This indicates that countries with higher energy supply per capita tend to have more citable documents per person, implying a potential connection between energy availability and scientific research output.
     print(correlation)
 
-
-    context = {}
+    # Use the matplotlib built-in function plot() to visualize the relationship between Energy Supply per Capita and Citable Documents per Capita. Install the matplotlib, BytesIO, & base64  library in your virtual environment and include the necessary import statement in the file's header.
+    data.plot(x='PopCitableDocuments', y='Energy Supply per Capita', kind='scatter') 
+    
+    # Save the plot to a BytesIO object
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()    
+    # Encode the image to base64
+    graphic = base64.b64encode(image_png).decode()
+    
+    context = {'graphic': graphic}
     return render(request, 'pandas/data-cleaning.html', context)
