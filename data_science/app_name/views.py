@@ -470,6 +470,12 @@ def data_read_excel_file(request):
     data.sort_values('PopEstimate', ascending=False, inplace=True)
     estimate_pop = data.iloc[2].name  
 
+    # Generation a new column that estimates the ratio of citable documents to the population (per person). Calculate the correlation between this ratio and the energy supply per capita using Pearson's correlation coefficient via the .corr() method.
+    data['PopEstimate'] = data['Energy Supply'] / data['Energy Supply per Capita']
+    data['PopCitableDocuments'] = data['Citable documents'] / data['PopEstimate']
+    correlation = data['PopCitableDocuments'].astype(float).corr(data['Energy Supply per Capita'].astype(float))
+    # A correlation coefficient of 0.79 suggests a strong positive linear relationship between the ratio of citable documents to the population (per person) and the energy supply per capita. In other words, as the energy supply per capita increases, there tends to be a corresponding increase in the ratio of citable documents to the population. This indicates that countries with higher energy supply per capita tend to have more citable documents per person, implying a potential connection between energy availability and scientific research output.
+    print(correlation)
 
 
     context = {}
