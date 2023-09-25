@@ -493,5 +493,52 @@ def data_read_excel_file(request):
     # Encode the image to base64
     graphic = base64.b64encode(image_png).decode()
     
-    context = {'graphic': graphic}
+    # Using DataFrame tools, set up a column containing a '1' if a country's % Renewable value matches or exceeds the median value among all countries within the top 15 rankings. Conversely, assign a '0' if the country's % Renewable value falls below the median. The resulting output will be a series named "High Renewable," and its index will be sorted in ascending order based on the country's rank.
+    mediana_value = data['% Renewable'].median()
+    data['HighRenewable'] = data.apply(lambda x: 1 if x['% Renewable'] >= mediana_value else 0, axis=1)
+    data.sort_values('Rank',ascending=True,inplace=True)
+    answer.append(mediana_value)
+
+    # Utilize the provided dictionary, defined as "ContinentDict," to group countries by their respective continents. Subsequently, construct a DataFrame that presents key statistics for each continent, including the sample size (number of countries), the sum, mean, and standard deviation of the estimated population of the countries within that continent.
+    
+    data_by_continent = pd.DataFrame(columns=['size', 'sum', 'mean', 'std'])
+    for idx, name in data.groupby(ContinentDict):
+        data_by_continent.loc[idx] = [len(name), name['PopEstimate'].sum(), name['PopEstimate'].mean(), name['PopEstimate'].std()]
+
+    # Divide the '% Renewable' values into five distinct bins. Afterward, categorize the 'Top15' dataset by both continent and the newly defined bins for '% Renewable.' Determine the count of countries in each of these combined groupings.
+
+    # The desired outcome is a Series that incorporates a MultiIndex structure, first based on the continent, and then further sub-divided by the bins representing '% Renewable.' Exclude groups that have no countries within them.
+    data['ByContinent'] = data.index.to_series().map(ContinentDict)
+    data['SubGroups'] = pd.cut(data['% Renewable'], 5)
+    data_by_continent_bins = data.groupby(['ByContinent', 'SubGroups']).size()
+    data_by_continent_bins = data_by_continent_bins[data_by_continent_bins > 0]
+   
+    # Create the bubble chart
+    plt.figure(figsize=(12, 8))  # Set the figure size
+
+    # Scatter plot with bubbles
+    plt.scatter(data['Rank'], data['Energy Supply'], s=data['Energy Supply per Capita'], c='b', alpha=0.5)
+
+    # Labeling axes and title
+    plt.xlabel('Rank')
+    plt.ylabel('Energy Supply')
+    plt.title('Bubble Chart: Rank vs. Energy Supply vs. Energy Supply per Capita')
+
+    # Adding a color bar for the size legend
+    plt.colorbar(label='Energy Supply per Capita')
+    plt.grid(True)
+   
+   # Save the plot to a BytesIO object
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()    
+    # Encode the image to base64
+    graphic2 = base64.b64encode(image_png).decode()  
+    print(data)
+
+
+
+    context = {'graphic': graphic , 'graphic2': graphic2}
     return render(request, 'pandas/data-cleaning.html', context)

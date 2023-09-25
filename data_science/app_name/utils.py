@@ -14,3 +14,19 @@ def calculate_overtime_pay(self):
 
 module_dir = os.path.dirname(__file__)
 parent_directory = os.path.dirname(module_dir)
+
+ContinentDict = {'China': 'Asia',
+                     'United States': 'North America',
+                     'Japan': 'Asia',
+                     'United Kingdom': 'Europe',
+                     'Russian Federation': 'Europe',
+                     'Canada': 'North America',
+                     'Germany': 'Europe',
+                     'India': 'Asia',
+                     'France': 'Europe',
+                     'South Korea': 'Asia',
+                     'Italy': 'Europe',
+                     'Spain': 'Europe',
+                     'Iran': 'Asia',
+                     'Australia': 'Australia',
+                     'Brazil': 'South America'}
