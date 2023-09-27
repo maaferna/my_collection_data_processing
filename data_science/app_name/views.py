@@ -438,7 +438,6 @@ def data_read_excel_file(request):
     top15_avg_rank = top15_avg_condition.mean(axis=1).sort_values(ascending=False)
     
     # In this analysis, we aim to calculate the extent of GDP fluctuation over a 10-year duration for the nation holding the 4th position in terms of its average GDP.
-
     data['avg_gdp'] = data[['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']].mean(axis=1)
     data.sort_values("avg_gdp", ascending=False, inplace=True)
     abs_value = abs(data.iloc[3]['2015']- data.iloc[3]['2006'])
@@ -541,4 +540,43 @@ def data_read_excel_file(request):
 
 
     context = {'graphic': graphic , 'graphic2': graphic2}
+    return render(request, 'pandas/data-cleaning.html', context)
+
+def hypothesis_testing(request):
+    file_path = parent_directory + '/static/datasets/university_towns.txt'
+    file_path2 = parent_directory + '/static/datasets/City_Zhvi_AllHomes.csv'
+    file_path3 = parent_directory + '/static/datasets/gdplev.xls'
+
+    # Obtain data from datasets usin Pandas 
+    df_towns = pd.read_fwf(file_path, header=None).rename(columns={0: 'State'})
+    df_university_towns = pd.DataFrame(columns=['State', 'RegionName'])
+    pattern = r'\[edit\]'
+    pattern_edit = '[edit]'
+    df_row = []
+    for line in df_towns['State']:
+        if pattern_edit in line:
+            town = None
+            ed = re.search(pattern, line)
+            state = line[:ed.start()].strip()
+        else:
+            if line == 'The Colleges of Worcester Consortium:':
+                town = 'The Colleges of Worcester Consortium:'
+            elif line == 'The Five College Region of Western Massachusetts:':
+                town = 'The Five College Region of Western Massachusetts:'
+            elif line == 'Faribault, South Central College':
+                town = 'Faribault, South Central College'
+            elif line == 'North Mankato, South Central College':
+                town = 'North Mankato, South Central College'
+            else:
+                nam_end = re.search(r'[\(:]', line)
+                if nam_end:
+                    town = line[:nam_end.start()].strip()
+
+        if town is not None and state is not None:
+            df_row.append({'State': state, 'RegionName': town})
+    
+    df_university_towns = pd.concat([df_university_towns, pd.DataFrame(df_row)], ignore_index=True)
+    
+    print(df_university_towns)
+    context = {}
     return render(request, 'pandas/data-cleaning.html', context)

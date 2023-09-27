@@ -14,4 +14,5 @@ urlpatterns = [
     path('pandas/data-cleaning/', data_cleaning, name='pandas-data-cleaning'),
     path('pandas/data-cleaning/census/', data_cleaning_census, name='pandas-census'),
     path('pandas/data-cleaning/excel_read/', data_read_excel_file, name='excel_read'),
+    path('pandas/hypothesis/', hypothesis_testing, name='hypothesis'),
 ]
