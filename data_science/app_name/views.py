@@ -546,9 +546,13 @@ def hypothesis_testing(request):
     file_path = parent_directory + '/static/datasets/university_towns.txt'
     file_path2 = parent_directory + '/static/datasets/City_Zhvi_AllHomes.csv'
     file_path3 = parent_directory + '/static/datasets/gdplev.xls'
-
+    answer = []
     # Obtain data from datasets usin Pandas 
     df_towns = pd.read_fwf(file_path, header=None).rename(columns={0: 'State'})
+    df_gdp = pd.read_excel(file_path3, skiprows=7).rename(columns={'Unnamed: 4':'Year_Quartile','Unnamed: 6':'GDP'})
+    df_gdp_end = df_gdp.copy()
+    df_gdp = df_gdp[211:]
+
     df_university_towns = pd.DataFrame(columns=['State', 'RegionName'])
     pattern = r'\[edit\]'
     pattern_edit = '[edit]'
@@ -576,7 +580,24 @@ def hypothesis_testing(request):
             df_row.append({'State': state, 'RegionName': town})
     
     df_university_towns = pd.concat([df_university_towns, pd.DataFrame(df_row)], ignore_index=True)
-    
-    print(df_university_towns)
+
+    # Provides the year and quarter of when the recession started. It is defined as two consecutive quarters of Gross Domestic Product (GDP) decline, concluding with two-quarters GDP growth.
+    year_quartile_start = []
+    for line in range(4, len(df_gdp)):
+        if (df_gdp.iloc[line-4,6] > df_gdp.iloc[line-3,6]) and (df_gdp.iloc[line - 3, 6] > df_gdp.iloc[line - 2,6]):
+            year_quartile_start.append(df_gdp.iloc[line-3,4])
+
+    answer.append(year_quartile_start[0])
+
+    # Provides the year and quarter of when the recession end time.
+    start_index = df_gdp_end[df_gdp_end['Year_Quartile'] == year_quartile_start[0]].index.to_list()
+    df_gdp_end = df_gdp_end[start_index[0]:]
+    year_quartile_end = []
+    for line in range(2, len(df_gdp_end)):
+        if (df_gdp_end.iloc[line - 4, 6] < df_gdp_end.iloc[line - 3, 6]) and (df_gdp_end.iloc[line - 3, 6] < df_gdp_end.iloc[line - 2, 6]):
+            year_quartile_end.append(df_gdp_end.iloc[line - 2, 4])
+            
+    answer.append(year_quartile_end[0])
+
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
