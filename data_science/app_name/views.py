@@ -551,6 +551,7 @@ def hypothesis_testing(request):
     df_towns = pd.read_fwf(file_path, header=None).rename(columns={0: 'State'})
     df_gdp = pd.read_excel(file_path3, skiprows=7).rename(columns={'Unnamed: 4':'Year_Quartile','Unnamed: 6':'GDP'})
     df_gdp_end = df_gdp.copy()
+    df_gdp_bottom = df_gdp.copy()
     df_gdp = df_gdp[211:]
 
     df_university_towns = pd.DataFrame(columns=['State', 'RegionName'])
@@ -596,8 +597,19 @@ def hypothesis_testing(request):
     for line in range(2, len(df_gdp_end)):
         if (df_gdp_end.iloc[line - 4, 6] < df_gdp_end.iloc[line - 3, 6]) and (df_gdp_end.iloc[line - 3, 6] < df_gdp_end.iloc[line - 2, 6]):
             year_quartile_end.append(df_gdp_end.iloc[line - 2, 4])
-            
+
     answer.append(year_quartile_end[0])
+    end_index = df_gdp_end[df_gdp_end['Year_Quartile'] == year_quartile_end[0]].index.to_list()
+    
+    # The recession bottom represents the quarter within a recession period that records the lowest GDP.
+    print(start_index[0],end_index[0])
+    df_gdp_bottom = df_gdp_bottom[start_index[0]:end_index[0]]
+    print(df_gdp_bottom)
+    df_gdp_bottom.reset_index(drop=True, inplace=True)
+    bottom_idx = df_gdp_bottom['GDP'].idxmin()
+    bottom = df_gdp_bottom.iloc[bottom_idx,4]
+    print(bottom)
+
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
