@@ -28,6 +28,7 @@ from decouple import config
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import ttest_ind
 
 # Create your views here.
 
@@ -550,9 +551,11 @@ def hypothesis_testing(request):
     # Obtain data from datasets usin Pandas 
     df_towns = pd.read_fwf(file_path, header=None).rename(columns={0: 'State'})
     df_gdp = pd.read_excel(file_path3, skiprows=7).rename(columns={'Unnamed: 4':'Year_Quartile','Unnamed: 6':'GDP'})
+    df_housing = pd.read_csv(file_path2)
     df_gdp_end = df_gdp.copy()
     df_gdp_bottom = df_gdp.copy()
     df_gdp = df_gdp[211:]
+    df_towns_hypothesis = df_towns.copy()
 
     df_university_towns = pd.DataFrame(columns=['State', 'RegionName'])
     pattern = r'\[edit\]'
@@ -602,14 +605,65 @@ def hypothesis_testing(request):
     end_index = df_gdp_end[df_gdp_end['Year_Quartile'] == year_quartile_end[0]].index.to_list()
     
     # The recession bottom represents the quarter within a recession period that records the lowest GDP.
-    print(start_index[0],end_index[0])
     df_gdp_bottom = df_gdp_bottom[start_index[0]:end_index[0]]
-    print(df_gdp_bottom)
     df_gdp_bottom.reset_index(drop=True, inplace=True)
     bottom_idx = df_gdp_bottom['GDP'].idxmin()
     bottom = df_gdp_bottom.iloc[bottom_idx,4]
-    print(bottom)
 
+    # This process involves converting housing data into quarterly intervals and presenting it as a DataFrame containing mean values. The resulting DataFrame will possess a multi-index structure, combining the "State" and "RegionName" as index levels.
+    # The resulting DataFrame will have columns ranging from 2000q1 to 2016q3, providing a comprehensive overview of housing data trends over this period.
+    df_housing['State'] = df_housing['State'].map(states)
+    df_housing.drop(['RegionID','CountyName','Metro','SizeRank'], axis=1, inplace=True)
+    df_housing = df_housing.set_index(['State','RegionName'])
+    col_init = df_housing.columns.get_loc('2000-01')
+    df_housing = df_housing.iloc[:,col_init:]
+    quartile_id = ['q1','q2','q3','q4']
+    df_quarters_name = []
+    for y in range(2000, 2017):
+            for q in quartile_id:
+                df_quarters_name.append(str(y)+q)
+    df_quarters_name.pop()
 
+    periodo = df_housing.columns
+    df_quarter_mean = []
+    for p in range(0,len(periodo),3):
+        df_sub = df_housing.iloc[:, p:p+3]
+        quarter_mean = df_sub.mean(axis = 1).round(2)
+        df_quarter_mean.append(quarter_mean)
+
+    df_mean = df_quarter_mean[0]
+    for i in range(1,len(df_quarter_mean)):
+        df_mean = pd.concat([df_mean,df_quarter_mean[i]], axis=1)
+
+    df_mean.columns = df_quarters_name
+    # We start by creating a new dataset that shows the changes in housing prices between the beginning of the recession and the recession's lowest point.
+    # Perform a t-test to compare housing price trends in university towns with those in non-university towns. The t-test helps us determine whether there is a significant difference between these two groups.
+    # Evaluate the alternative hypothesis, which posits that the two groups have different housing price trends. Specifically, we assess whether this hypothesis is true or not.
+    # Calculate the p-value using the scipy.stats.ttest_ind() function. The p-value is a measure of the confidence level in our results.
+
+    df_mean['recession_diff'] = df_mean[year_quartile_start[0]] - df_mean[bottom]
+    df_mean['with_university'] = False
+    df_housing_towns_with = pd.merge(df_mean,df_university_towns, how='inner', on = ['State','RegionName'])
+    df_housing_towns_with['with_university'] = True
+
+    df_ttest_with = df_housing_towns_with['recession_diff'].dropna()
+    df_mean.drop('with_university',axis='columns', inplace=True)
+    df_housing_towns_with.drop('with_university',axis='columns', inplace=True)
+
+    df_housing_towns_non = pd.concat([df_mean, df_housing_towns_with]).drop_duplicates(keep=False)
+
+    df_ttest_non = df_housing_towns_non['recession_diff'].dropna()
+
+    st, p = ttest_ind(df_ttest_with, df_ttest_non, nan_policy='omit')
+
+    if st < 0.01:
+        st = True
+
+    if df_ttest_with.mean() < df_ttest_non.mean():
+        best = "university towns"
+    else:
+        best = "non-university town"
+    
+    print(st, p, best)
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)

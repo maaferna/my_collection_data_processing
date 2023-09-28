@@ -27,6 +27,7 @@ pandas = "*"
 xlrd = "*"
 openpyxl = "*"
 matplotlib = "*"
+scipy = "*"
 
 [dev-packages]
 
