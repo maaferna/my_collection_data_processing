@@ -10,6 +10,7 @@ import re
 # To generate images
 from io import BytesIO
 import base64
+import datetime
 
 import ssl
 import os
@@ -701,7 +702,44 @@ def daily_climate(request):
 
     plt.show()
 
+ 
+    # Convert the 'Tiempo UTC-4' column to datetime format
+    df_cleaned['Tiempo UTC-4'] = pd.to_datetime(df_cleaned['Tiempo UTC-4'], format='%d-%m-%Y')
+    # Filter the DataFrame for the year 2022
+    df_2022 = df_cleaned[df_cleaned['Tiempo UTC-4'].dt.year == 2022]
+    # Find the maximum value of 'TMAX' for the year 2022
+    max_tmax_2022 = df_2022['TMAX'].max()
+    min_tmax_2022 = df_2022['TMIN'].min()
     # Highlighting Anomalies: Overlay a scatter plot with data from the year 2022. This scatter plot will emphasize any data points (representing temperature highs and lows) where the records set between 2005 and 2014 were surpassed in 2022. These points will provide valuable insights into notable climate anomalies.
+
+    plt.figure(figsize=(16,10))
+    plt.title('Record high and record low temperatures by day (year 2022)',alpha=0.8)
+
+    plt.scatter(df_cleaned['Tiempo UTC-4'],df_cleaned['TMAX'], c = 'red', label ='Record High')
+    plt.scatter(df_cleaned['Tiempo UTC-4'],df_cleaned['TMIN'], c = 'blue', label ='Record Low')
+
+    plt.legend(['Record High T (2015)°', 'Record Low T° (2015)','Record High (period 2005-2014)','Record Low (period 2005-2014)'])
+
+    plt.xlabel('Date')
+    plt.ylabel('Temperature, (tenths C°)')
+
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+
+    x = plt.gca().xaxis
+    for item in x.get_ticklabels():
+        item.set_rotation(45)
+
+    # Convert the date strings to datetime objects for xlim
+    xlim_start = pd.to_datetime('01-01-2010', format='%d-%m-%Y')
+    xlim_end = pd.to_datetime('01-10-2023', format='%d-%m-%Y')
+
+    plt.xlim([xlim_start, xlim_end])
+        
+    plt.axhline(y = max_tmax_2022, color='r', linestyle='-',label ='Record High (period 2005-2014)')
+    plt.axhline(y = min_tmax_2022, color='b', linestyle='-',label ='Record Low (period 2005-2014)')
+
+    plt.show()
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
