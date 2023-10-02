@@ -24,7 +24,7 @@ from .utils import *
 import requests
 from bs4 import BeautifulSoup
 import tweepy
-from decouple import config
+#from decouple import config
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -665,5 +665,43 @@ def hypothesis_testing(request):
         best = "non-university town"
     
     print(st, p, best)
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
+
+def daily_climate(request):
+    # Climate Data Daily IDN Chili daily climate data from Agrometeorología (Red agromemtrológica INIA) 2010 to 2023. Cover: Pixabay
+    file_path = parent_directory + '/static/datasets/agrometeorologia-chillan2013-2023.csv'
+    df = pd.read_csv(file_path, skiprows=5, header=0)
+
+    # Define a list of columns that should only contain dates
+    date_columns = ['Tiempo UTC-4']
+    integer_columns = ['Temperatura del Aire Mínima ºC', 'Temperatura del Aire Máxima ºC']
+    # Filter out rows with NaN values in date columns and reset the index
+    df_cleaned = df.dropna(subset=date_columns, how='all').reset_index(drop=True)
+    df_cleaned = df_cleaned.dropna(subset=integer_columns, how='all')
+    df_cleaned.rename(columns={integer_columns[0]:'TMIN', integer_columns[1]:'TMAX'}, inplace=True)
+
+    print(df_cleaned)
+    # Begin by thoroughly studying the dataset documentation to gain a comprehensive understanding of its structure and contents.
+    # Temperature Trends Visualization: Develop Python code that generates a line graph depicting the record high and record low temperatures for each day of the year, covering the period from 2005 to 2014. To enhance clarity, the area between the record high and record low temperatures for each day should be shaded.
+    # Through this project, we aim to not only uncover temperature trends but also demonstrate the power of data visualization in making complex information accessible and engaging. Ultimately, the project will provide a valuable resource for understanding historical climate patterns in Chillán city.
+    plt.figure(figsize=(16,10))
+    plt.title('Record high and record low temperatures by day (period 2010-2023)',alpha=0.8)
+
+    plt.plot(df_cleaned['TMAX'], c = 'red', label ='Record High')
+    plt.plot(df_cleaned['TMIN'], c = 'blue', label ='Record Low')
+    plt.gca().fill_between(range(len(df_cleaned)),df_cleaned['TMAX'],df_cleaned['TMIN'],facecolor='black',alpha=0.25)
+    plt.legend(['Record High T°', 'Record Low T°'])
+
+    plt.xlabel('Days')
+    plt.ylabel('Temperature, (tenths C°)')
+
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+
+    plt.show()
+
+    # Highlighting Anomalies: Overlay a scatter plot with data from the year 2022. This scatter plot will emphasize any data points (representing temperature highs and lows) where the records set between 2005 and 2014 were surpassed in 2022. These points will provide valuable insights into notable climate anomalies.
+
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
