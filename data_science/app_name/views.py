@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 from lxml import etree
 from collections import Counter
 import re
+import math
+
 # To generate images
 from io import BytesIO
 import base64
@@ -29,6 +31,9 @@ import tweepy
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.transforms as transforms
+from matplotlib import cm
+
 from scipy.stats import ttest_ind
 
 # Create your views here.
@@ -736,10 +741,112 @@ def daily_climate(request):
 
     plt.xlim([xlim_start, xlim_end])
         
-    plt.axhline(y = max_tmax_2022, color='r', linestyle='-',label ='Record High (period 2005-2014)')
-    plt.axhline(y = min_tmax_2022, color='b', linestyle='-',label ='Record Low (period 2005-2014)')
+    plt.axhline(y = max_tmax_2022, color='r', linestyle='-',label ='Record High (period 2010-2023)')
+    plt.axhline(y = min_tmax_2022, color='b', linestyle='-',label ='Record Low (period 2010-2023)')
 
     plt.show()
+
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
+
+def customize_visualization(request):
+    # Customized Data Visualization for Informed Decision-Making
+
+    # Data collection, to generate the data it was used the Numpy library to seed data into a DataFrame.
+    np.random.seed(12345)
+
+    df = pd.DataFrame([np.random.normal(32000,200000,3650), 
+                   np.random.normal(43000,100000,3650), 
+                   np.random.normal(43500,140000,3650), 
+                   np.random.normal(48000,70000,3650)], 
+                  index=[1992,1993,1994,1995])
+
+    raw_df = df.copy()
+    df = df.transpose()
+    sample_size = len(df)
+    mean_list = df.mean(axis=0).tolist()
+    mean_list = [ '%.2f' % elem for elem in mean_list ]
+    mean_list = [float(i) for i in mean_list]
+    print(mean_list)
+
+    std_list = df.std(axis=0).tolist()
+    std_list = [ '%.2f' % elem for elem in std_list ]
+    std_list = [float(i) for i in std_list]
+    print(std_list)
+
+    atribute_name = df.columns.values.tolist()
+    CI = []
+    print(atribute_name)
+
+
+    print(df)
+    #Calculate interval confidence of 95%, Z= 1.96
+    for i in range(4):
+        CI.append(1.96*float(std_list[i])/math.sqrt(sample_size))
+
+    CI = [ '%.2f' % elem for elem in CI ]
+    confidence = [float(i) for i in CI]
+
+    x_pos = np.arange(len(atribute_name))
+
+    #Option color bar
+    threshold = float(input("Enter y axis value (threshold) : "))
+    blues = cm.Blues
+    reds = cm.Reds
+
+    def colorForBar(mean_list, threshold, confidence):
+        if (mean_list - confidence) <= threshold and (mean_list + confidence) >= threshold:
+            return "white"
+
+        if mean_list < threshold:
+            return "blue"
+
+        if mean_list > threshold:
+            return "red"
+
+    colors = []
+    for i in range(0,len(mean_list)):
+        colors.append(colorForBar(int(mean_list[i]),threshold,int(confidence[i])))
+
+
+    fig, ax = plt.subplots()
+    ax.bar(x_pos,mean_list,bottom=0, width=0.5,color=colors,yerr=confidence, error_kw={'capsize': 10, 'elinewidth': 2, 'alpha':0.7},align='center')
+    ax.yaxis.set_ticks_position('none')
+    ax.axhline(y=threshold,zorder=10,linestyle='--',color='orangered',label='Threshold')
+    ax.set_ylabel('Value')
+    ax.set_xlabel('Age')
+    ax.set_xticks(x_pos)
+    ax.set_facecolor('.9')
+    ax.set_xticklabels(atribute_name)
+    ax.set_title('Mean Values with 95% Confidence Intervals for Each Year')
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+
+
+    plt.show()
+
+    # Create a new figure
+    plt.figure(figsize=(10, 6))
+
+    # Plot the mean values as bars
+    plt.bar(atribute_name, mean_list, color='lightblue', alpha=0.7, label='Mean Value')
+
+    # Add error bars representing confidence intervals
+    plt.errorbar(atribute_name, mean_list, yerr=confidence, fmt='o', color='darkblue', label='95% CI')
+
+    # Add labels and a title
+    plt.xlabel('Year')
+    plt.ylabel('Value')
+    plt.title('Mean Values with 95% Confidence Intervals for Each Year')
+
+    # Add a legend
+    plt.legend()
+
+    # Show the plot
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    plt.show()
+
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
