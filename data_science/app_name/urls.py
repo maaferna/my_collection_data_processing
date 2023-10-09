@@ -17,4 +17,5 @@ urlpatterns = [
     path('pandas/hypothesis/', hypothesis_testing, name='hypothesis'),
     path('data-visualization/', daily_climate, name='daily_climate'),
     path('data-visualization/customize/', customize_visualization, name="customize_visualization"),
+    path('data-visualization/gridspec/', weather_phenomena, name='gridspec'),
 ]

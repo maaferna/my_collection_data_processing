@@ -850,3 +850,122 @@ def customize_visualization(request):
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
+
+def weather_phenomena(request):
+    # How has the daily climate data in various regions of Indonesia from 2010 to 2020.
+    file_path = parent_directory + '/static/datasets/weather_phenomena/climate_data.csv'
+    file_path2 = parent_directory + '/static/datasets/weather_phenomena/province_detail.csv'
+    file_path3 = parent_directory + '/static/datasets/weather_phenomena/station_detail.csv'
+
+    df_climate = pd.read_csv(file_path)
+    df_province = pd.read_csv(file_path2)
+    df_station = pd.read_csv(file_path3)
+
+    filter_condition_id_province = 1
+
+    filtered_df_station = df_station[df_station['province_id'] == filter_condition_id_province]
+    # Merge filtered_df_station with df_climate
+    merged_df = pd.merge(filtered_df_station, df_climate, on='station_id', how='inner')
+
+    # Merge the result with df_province
+    df = pd.merge(merged_df, df_province, left_on='province_id', right_on='province_id', how='inner')
+    df.dropna(subset=['Tn', 'Tx', 'Tavg'], how='any', inplace=True)
+
+    unique_station_id = df['station_id'].unique()
+    
+    print(df)
+    print(unique_station_id)
+    # Calculate the number of rows and columns for the grid
+    num_rows = (len(unique_station_id) + 1) // 2  # Add 1 and use integer division to round up
+    num_cols = 2
+
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(12, 8), sharex=True, sharey=True)
+    for idx, station_id in enumerate(unique_station_id):
+        row = idx // 2
+        col = idx % 2
+        ax = axes[row, col]
+
+        # Generate a plot for the station_id
+        data_for_station = df[df['station_id'] == station_id]
+        # Replace 'x_values' and 'y_values' with your specific data for plotting
+        station_name = data_for_station['station_name'].iloc[0]  # Get the station_name for the current station
+
+        x_values = pd.to_datetime(data_for_station['date'], format='%d-%m-%Y')  # Convert 'date' to datetime
+        y_values = data_for_station['RR']  # Replace with the actual column you want to plot
+
+        # Create a secondary y-axis for 'RH_avg'
+        ax2 = ax.twinx()
+        y_values_rh = data_for_station['RH_avg']  # Replace with the actual 'RH_avg' column
+
+        ax.plot(x_values, y_values, color='blue', label='Rain Fall mm')
+        ax2.fill_between(x_values, y_values_rh, color='gray', label='RH_avg', alpha=0.5)
+
+        ax.set_title(f'Station Name {station_name}')
+        ax.set_ylabel('Rain Fall mm', color='blue')
+        ax2.set_ylabel('RH_avg', color='red')
+
+
+    # Adjust layout to prevent overlapping titles
+    plt.tight_layout()
+
+    # Show or save the plot
+    plt.show()
+
+    # Create subplots for each station_id
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(10, 6), sharex=True, sharey=True)
+    # Create empty lists to store legend handles and labels
+    legend_handles = []
+    legend_labels = []
+    # Iterate through unique_station_id
+    for idx, station_id in enumerate(unique_station_id):
+        row = idx // 2
+        col = idx % 2
+        ax = axes[row, col]
+        # Generate a plot for the station_id
+        data_for_station = df[df['station_id'] == station_id]
+        data_for_station['date'] = pd.to_datetime(data_for_station['date'], format='%d-%m-%Y')
+        
+        station_name = data_for_station['station_name'].iloc[0]  # Get the station_name for the current station
+
+        # Calculate the minimum and maximum average temperature for each month
+        monthly_min_temp = data_for_station.groupby(data_for_station['date'].dt.to_period('M'))['Tn'].min()
+        monthly_max_temp = data_for_station.groupby(data_for_station['date'].dt.to_period('M'))['Tx'].max()
+        monthly_avg_temp = data_for_station.groupby(data_for_station['date'].dt.to_period('M'))['Tavg'].mean()
+
+        # Create a DataFrame for monthly temperature values
+        monthly_temp_df = pd.DataFrame({'Month': monthly_min_temp.index.to_timestamp(), 'Min Temp (°C)': monthly_min_temp.values, 'Max Temp (°C)': monthly_max_temp.values, 'Avg Temp (°C)': monthly_avg_temp.values})
+
+        # Plot the minimum and maximum monthly average temperatures
+        ax.plot(monthly_temp_df['Month'], monthly_temp_df['Min Temp (°C)'], label='Min Temp (°C)', marker='o', color='blue')
+        ax.plot(monthly_temp_df['Month'], monthly_temp_df['Max Temp (°C)'], label='Max Temp (°C)', marker='o', color='red')
+        
+        ax.set_title(f'Station Name {station_name}')
+        ax.set_ylabel('Temperature (°C)')
+        ax.legend()
+        # Add a trendline for Avg Temp (°C)
+        ax2 = ax.twinx()
+        x_values = np.arange(len(monthly_temp_df['Month']))
+        y_values = monthly_temp_df['Avg Temp (°C)']
+        trendline = np.polyfit(x_values, y_values, 1)
+        ax2.plot(monthly_temp_df['Month'], np.polyval(trendline, x_values), label='Trendline (Avg Temp)', linestyle=':', color='orange')
+        
+    # Add the legend for trendline once
+    legend_handles.append(ax2.lines[0])
+    legend_labels.append('Trendline (Avg Temp)')
+
+    # Adjust legend positions
+    for ax in axes.flat:
+        lines1, labels1 = ax.get_legend_handles_labels()
+        ax.legend(lines1 + legend_handles, labels1 + legend_labels, loc='upper left')
+
+    # Set common x-label and rotate x-axis labels for readability
+    plt.xlabel('Month')
+
+    # Adjust layout to prevent overlapping titles
+    plt.tight_layout()
+
+    # Show the plot
+    plt.show()
+
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
