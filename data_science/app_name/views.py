@@ -879,6 +879,7 @@ def weather_phenomena(request):
     num_rows = (len(unique_station_id) + 1) // 2  # Add 1 and use integer division to round up
     num_cols = 2
 
+
     fig, axes = plt.subplots(num_rows, num_cols, figsize=(12, 8), sharex=True, sharey=True)
     for idx, station_id in enumerate(unique_station_id):
         row = idx // 2
@@ -966,6 +967,20 @@ def weather_phenomena(request):
 
     # Show the plot
     plt.show()
+
+    context = {}
+    return render(request, 'pandas/data-cleaning.html', context)
+
+def sklearn_knn(request):
+     # How has the daily climate data in various regions of Indonesia from 2010 to 2020.
+    file_path = parent_directory + '/static/datasets/database_cancer.csv'
+    # Specify the column indices to include, excluding the first column (index 0)
+    df = pd.read_csv(file_path,  usecols=lambda column: column != "Unnamed: 0")
+    Index = ['benign','malignant']
+    types_count = df['target'].value_counts()
+    types_count.index = Index
+    print(df)
+    print(types_count)
 
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)

@@ -18,4 +18,5 @@ urlpatterns = [
     path('data-visualization/', daily_climate, name='daily_climate'),
     path('data-visualization/customize/', customize_visualization, name="customize_visualization"),
     path('data-visualization/gridspec/', weather_phenomena, name='gridspec'),
+    path('machine_learning/supervised/knn/', sklearn_knn, name='sklearn_knn'),
 ]
