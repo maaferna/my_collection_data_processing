@@ -36,6 +36,9 @@ from matplotlib import cm
 
 from scipy.stats import ttest_ind
 
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
 # Create your views here.
 
 def index(request):
@@ -979,8 +982,27 @@ def sklearn_knn(request):
     Index = ['benign','malignant']
     types_count = df['target'].value_counts()
     types_count.index = Index
-    print(df)
-    print(types_count)
+    # Create a pie chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(types_count, labels=types_count.index, autopct='%1.1f%%', colors=['green', 'red'], startangle=140)
+    plt.title('Distribution of Cancer Types')
+    plt.axis('equal')  # Ensures the pie chart is circular
+    plt.legend(labels=types_count.index, loc='best', fontsize='x-large')  # Adjust the font size here
 
+    # In this project, combining the capabilities of Python, sci-kit-learn, and Django, the objective is to create a cancer detection model, ensuring a seamless process of preparing data and splitting it into train and test datasets.. The generated model can assist in the early diagnosis of cancer, improving the accuracy of healthcare professionals' decisions.
+
+    # In the context of KNN models, the separation of X and y is an essential step as it allows you to train a KNN classifier on the feature matrix (X) and then use the trained model to predict the class labels (y) for new or unseen data points. KNN relies on the features in X to find the k-nearest neighbors and determine the majority class among those neighbors, which is used to classify a data point.
+    X = df.drop('target', axis=1)
+    y = df.get('target')
+
+    X_train, X_test, y_train, y_test = train_test_split(X,y, random_state=0)
+
+    # Creating an instance of the KNeighborsClassifier class with a specific configuration. 
+    # KNeighborsClassifier initializes a instance with a "k" value of 1, emphasizing the nearest neighbor's class as the primary factor in classification. This choice has implications for the model's precision and sensitivity, making it essential to carefully consider the appropriate value of n_neighbors based on the specific requirements of your task.
+    knn = KNeighborsClassifier(n_neighbors=1)  
+
+    print(X)
+    print(y)
+    print(knn)
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)

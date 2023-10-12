@@ -28,6 +28,7 @@ xlrd = "*"
 openpyxl = "*"
 matplotlib = "*"
 scipy = "*"
+scikit-learn = "*"
 
 [dev-packages]
 
