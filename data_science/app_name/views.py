@@ -999,10 +999,22 @@ def sklearn_knn(request):
 
     # Creating an instance of the KNeighborsClassifier class with a specific configuration. 
     # KNeighborsClassifier initializes a instance with a "k" value of 1, emphasizing the nearest neighbor's class as the primary factor in classification. This choice has implications for the model's precision and sensitivity, making it essential to carefully consider the appropriate value of n_neighbors based on the specific requirements of your task.
-    knn = KNeighborsClassifier(n_neighbors=1)  
+    for idx in range(1,20):
+        knn_model = KNeighborsClassifier(n_neighbors=idx)
+        knn = knn_model.fit(X_train, y_train)  
 
-    print(X)
-    print(y)
-    print(knn)
+        # Creating dataframe to calculate the means to each column of original dataframe, exclude the target field
+        means = df.mean()[:-1].values.reshape(1,-1)
+
+        # Creating a predict models
+        knn_predict = knn.predict(means)
+
+        # Leveraging our K-nearest neighbors (KNN) classifier, we predict class labels for the test set, yielding a NumPy array with a shape of (143,) containing values of 0.0 or 1.
+        # Determine the mean accuracy score of your KNN classifier with X_test and y_test, yielding a float within the range of 0 to 1.
+        test_data = knn.predict(X_test)
+        score_knn = knn.score(X_test, y_test)
+
+        
+        print(idx,score_knn)
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
