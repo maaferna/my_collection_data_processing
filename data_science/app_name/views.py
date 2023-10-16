@@ -38,6 +38,7 @@ from scipy.stats import ttest_ind
 
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
 
 # Create your views here.
 
@@ -997,6 +998,11 @@ def sklearn_knn(request):
 
     X_train, X_test, y_train, y_test = train_test_split(X,y, random_state=0)
 
+    best_accuracy = 0
+    best_n_neighboors = 0
+
+    results_dict = {}
+
     # Creating an instance of the KNeighborsClassifier class with a specific configuration. 
     # KNeighborsClassifier initializes a instance with a "k" value of 1, emphasizing the nearest neighbor's class as the primary factor in classification. This choice has implications for the model's precision and sensitivity, making it essential to carefully consider the appropriate value of n_neighbors based on the specific requirements of your task.
     for idx in range(1,20):
@@ -1014,7 +1020,18 @@ def sklearn_knn(request):
         test_data = knn.predict(X_test)
         score_knn = knn.score(X_test, y_test)
 
-        
-        print(idx,score_knn)
+        # It is necessary to test various n_neighbors values for a K-nearest neighbors (KNN) classifier and select the most suitable parameter by assessing accuracy scores, ensuring a balance between overfitting and underfitting while considering the problem's nature and dataset size.
+        # Perform cross-validation on the training data
+        cv_scores = cross_val_score(knn_model, X_train, y_train, cv=5)  # 5-fold cross-validation
+        # Calculate the mean accuracy across cross-validation folds
+        mean_accuracy = cv_scores.mean()
+
+        # Store the results in the dictionary
+        results_dict[idx] = {
+            'n_neighbors': idx,
+            'cross_val_accuracy': mean_accuracy,
+            'test_accuracy': score_knn
+        }
+    print(results_dict)
     context = {}
     return render(request, 'pandas/data-cleaning.html', context)
