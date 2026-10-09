@@ -1,1 +1,4 @@
 .env
+# Local database and secrets
+db.sqlite3
+.env

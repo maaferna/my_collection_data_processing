@@ -31,6 +31,7 @@ Beautiful Soup · Pipenv
 ```bash
 cd data_science
 pipenv install            # or: pip install -r requirements.txt
+cp .env.example .env      # fill in your own values — never commit .env
 python manage.py migrate
 python manage.py runserver
 ```

@@ -27,7 +27,7 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'true'
 
 
 
@@ -38,7 +38,7 @@ TWITTER_ACCESS_TOKEN = os.environ['TWITTER_ACCESS_TOKEN']
 TWITTER_ACCESS_TOKEN_SECRET = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
 TWITTER_BEARER_TOKEN = os.environ['TWITTER_BEARER_TOKEN']
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -98,8 +98,8 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME':  os.getenv('db_name'),
-        'USER': 'mparraf',
-        'PASSWORD': 'claveadmin',
+        'USER': os.getenv('db_user', ''),
+        'PASSWORD': os.getenv('db_password', ''),
         'HOST': os.getenv('host_name'), 
         'PORT': '5432',
         'TEST': {'NAME': 'test_db'},
